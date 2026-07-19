@@ -430,7 +430,7 @@
   }
 
   function updateMarkAllReadVisibility() {
-    if (state.currentTab === 'latest' && window.innerWidth <= 768) {
+    if (state.currentTab === 'latest' && state.articles && state.articles.length > 0) {
       markAllRead.style.display = 'block';
     } else {
       markAllRead.style.display = 'none';
