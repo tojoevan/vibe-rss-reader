@@ -1,0 +1,15 @@
+{
+  "name": "vibe-rss-reader",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloud RSS Reader — Serverless, cross-device sync, mobile-first",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=RSS_DB --port 8788",
+    "deploy": "wrangler pages deploy public",
+    "db:init": "wrangler d1 execute RSS_DB --file=schema.sql",
+    "db:init:local": "wrangler d1 execute RSS_DB --local --file=schema.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  }
+}
