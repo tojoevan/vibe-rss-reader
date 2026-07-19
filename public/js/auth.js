@@ -18,7 +18,18 @@ window.Auth = (() => {
         return;
       }
 
-      clerkInstance = new window.Clerk(publishableKey);
+      // Dynamically load Clerk JS
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
+        script.crossOrigin = 'anonymous';
+        script.setAttribute('data-clerk-publishable-key', publishableKey);
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load Clerk script'));
+        document.head.appendChild(script);
+      });
+
+      clerkInstance = window.Clerk;
       await clerkInstance.load();
 
       // Listen for auth state changes
