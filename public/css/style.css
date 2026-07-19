@@ -5,7 +5,44 @@
 
 /* --- Design Tokens --- */
 :root {
-  /* Color Palette */
+  /* Color Palette - Light Mode (High-end Grey) */
+  --bg-primary: #f2f2f3;
+  --bg-secondary: #e6e6e8;
+  --bg-tertiary: #dcdcdc;
+  --bg-surface: #ffffff;
+  --bg-hover: #eaeaea;
+  --bg-active: #d5d5d5;
+
+  --text-primary: #2d2d30;
+  --text-secondary: #5e5e62;
+  --text-muted: #8e8e93;
+  --text-inverse: #ffffff;
+
+  --accent: #3b3b40;
+  --accent-hover: #1e1e22;
+  --accent-dim: rgba(59, 59, 64, 0.1);
+  --accent-glow: rgba(59, 59, 64, 0.15);
+
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #eab308;
+  --info: #3b82f6;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+
+  /* Glass */
+  --glass-bg: rgba(242, 242, 243, 0.85);
+  --glass-blur: 20px;
+  --glass-border: rgba(0, 0, 0, 0.05);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+[data-theme="dark"] {
+  /* Color Palette - Dark Mode */
   --bg-primary: #0a0a12;
   --bg-secondary: #12121e;
   --bg-tertiary: #1a1a2e;
@@ -23,22 +60,13 @@
   --accent-dim: rgba(249, 115, 22, 0.15);
   --accent-glow: rgba(249, 115, 22, 0.3);
 
-  --success: #22c55e;
-  --danger: #ef4444;
-  --warning: #eab308;
-  --info: #3b82f6;
-
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.12);
 
   /* Glass */
   --glass-bg: rgba(22, 22, 42, 0.75);
-  --glass-blur: 20px;
   --glass-border: rgba(255, 255, 255, 0.08);
-
-  /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
 
   --text-xs: 0.75rem;
   --text-sm: 0.8125rem;

@@ -51,6 +51,36 @@
   }
 
   // ============================================================
+  // THEME MANAGEMENT
+  // ============================================================
+  const themeToggleBtn = $('theme-toggle');
+  const iconSun = themeToggleBtn.querySelector('.icon-sun');
+  const iconMoon = themeToggleBtn.querySelector('.icon-moon');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      iconSun.style.display = 'block';
+      iconMoon.style.display = 'none';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      iconSun.style.display = 'none';
+      iconMoon.style.display = 'block';
+    }
+  }
+
+  // Initialize theme
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+
+  themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+  });
+
+  // ============================================================
   // AUTH EVENTS
   // ============================================================
   window.addEventListener('auth:login', async () => {
