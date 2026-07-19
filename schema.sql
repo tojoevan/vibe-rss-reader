@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS user_subscriptions (
   feed_id     INTEGER NOT NULL REFERENCES feed_sources(id) ON DELETE CASCADE,
   category    TEXT    DEFAULT '',
   created_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+  deleted_at  TEXT    DEFAULT NULL,
   UNIQUE(user_id, feed_id)
 );
 
