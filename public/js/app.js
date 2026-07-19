@@ -696,18 +696,18 @@
       `).join('');
 
       // Render pagination
-      if (data.pagination && data.pagination.totalPages > 1 && paginationEl) {
+      if (data.pagination && paginationEl) {
         const { totalPages } = data.pagination;
         paginationEl.style.display = 'flex';
         paginationEl.className = 'pagination'; 
         paginationEl.style.justifyContent = 'center';
         paginationEl.innerHTML = `
           <button class="btn btn-ghost" id="pool-prev-page" ${poolCurrentPage <= 1 ? 'disabled' : ''}>上一页</button>
-          <span class="page-info" style="margin: 0 var(--space-md);">${poolCurrentPage} / ${totalPages}</span>
+          <span class="page-info" style="margin: 0 var(--space-md);">${poolCurrentPage} / ${Math.max(1, totalPages)}</span>
           <button class="btn btn-ghost" id="pool-next-page" ${poolCurrentPage >= totalPages ? 'disabled' : ''}>下一页</button>
           <div style="display:flex; align-items:center; margin-left: 16px; gap: 4px;">
             <span style="font-size:var(--text-sm);">跳转到</span>
-            <input type="number" id="pool-jump-input" class="pagination-input" min="1" max="${totalPages}" value="${poolCurrentPage}">
+            <input type="number" id="pool-jump-input" class="pagination-input" min="1" max="${Math.max(1, totalPages)}" value="${poolCurrentPage}">
             <button class="btn btn-ghost" id="pool-jump-btn">Go</button>
           </div>
         `;
