@@ -46,7 +46,7 @@ window.Auth = (() => {
 
     const userArea = document.getElementById('user-area');
     const guestArea = document.getElementById('guest-area');
-    const userName = document.getElementById('user-name');
+    const userName = document.getElementById('user-name-text') || document.getElementById('user-name');
 
     if (currentUser) {
       // Logged in
