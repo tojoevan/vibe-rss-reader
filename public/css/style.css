@@ -1000,7 +1000,7 @@ input { font: inherit; color: inherit; }
 
   .sidebar {
     position: fixed;
-    top: var(--header-height);
+    top: calc(var(--header-height) + var(--mobile-tab-height));
     left: 0; bottom: 0;
     width: 280px;
     z-index: 80;
@@ -1031,7 +1031,7 @@ input { font: inherit; color: inherit; }
     position: fixed;
     top: var(--header-height);
     left: 0; right: 0; bottom: 0;
-    z-index: 70;
+    z-index: 95;
     transform: translateX(100%);
     transition: transform var(--transition-base);
     background: var(--bg-primary);
