@@ -991,6 +991,7 @@ input { font: inherit; color: inherit; }
   }
 
   .sidebar-toggle { display: flex; }
+  #pc-categories { display: none !important; }
 
   .app-main {
     grid-template-columns: 1fr;
