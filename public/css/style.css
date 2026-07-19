@@ -834,7 +834,7 @@ input { font: inherit; color: inherit; }
 }
 
 .guest-col h2 {
-  font-size: var(--text-xl);
+  font-size: var(--text-base);
   margin-bottom: var(--space-lg);
   padding-bottom: var(--space-md);
   border-bottom: 1px solid var(--border);
