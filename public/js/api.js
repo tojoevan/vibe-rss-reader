@@ -91,8 +91,8 @@ window.API = (() => {
     },
 
     // --- Pool ---
-    getPool(status = 'approved') {
-      return request(`/api/pool?status=${status}`);
+    getPool(status = 'approved', page = 1, pageSize = 20) {
+      return request(`/api/pool?status=${status}&page=${page}&pageSize=${pageSize}`);
     },
 
     reviewFeed(feedId, action) {

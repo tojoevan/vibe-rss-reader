@@ -22,6 +22,10 @@ export async function onRequestGet(context) {
   const { request, data, env } = context;
   const url = new URL(request.url);
   const status = url.searchParams.get('status') || 'approved';
+  
+  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
+  const pageSize = Math.min(100, Math.max(1, parseInt(url.searchParams.get('pageSize') || '20', 10)));
+  const offset = (page - 1) * pageSize;
 
   try {
     if (status !== 'approved') {
@@ -31,23 +35,31 @@ export async function onRequestGet(context) {
         });
       }
       
+      const countResult = await env.RSS_DB.prepare('SELECT COUNT(*) as total FROM feed_sources WHERE status = ?').bind(status).first();
+      const total = countResult ? countResult.total : 0;
+      
       const result = await env.RSS_DB.prepare(
-        'SELECT * FROM feed_sources WHERE status = ? ORDER BY created_at DESC'
-      ).bind(status).all();
+        'SELECT * FROM feed_sources WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?'
+      ).bind(status, pageSize, offset).all();
 
-      return new Response(JSON.stringify({ sources: result.results }), {
-        headers: corsHeaders()
-      });
+      return new Response(JSON.stringify({ 
+        sources: result.results,
+        pagination: { total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
+      }), { headers: corsHeaders() });
     }
 
     // Normal users only see approved
-    const result = await env.RSS_DB.prepare(
-      'SELECT id, url, title, description, favicon_url, site_url FROM feed_sources WHERE status = ? ORDER BY created_at DESC'
-    ).bind('approved').all();
+    const countResult = await env.RSS_DB.prepare('SELECT COUNT(*) as total FROM feed_sources WHERE status = ?').bind('approved').first();
+    const total = countResult ? countResult.total : 0;
 
-    return new Response(JSON.stringify({ sources: result.results }), {
-      headers: corsHeaders()
-    });
+    const result = await env.RSS_DB.prepare(
+      'SELECT id, url, title, description, favicon_url, site_url FROM feed_sources WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?'
+    ).bind('approved', pageSize, offset).all();
+
+    return new Response(JSON.stringify({ 
+      sources: result.results,
+      pagination: { total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
+    }), { headers: corsHeaders() });
 
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {

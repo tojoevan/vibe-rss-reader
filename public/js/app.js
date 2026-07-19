@@ -667,15 +667,19 @@
   // ============================================================
   // RESOURCE POOL
   // ============================================================
-  $('btn-explore-pool').addEventListener('click', async () => {
-    const modal = $('pool-modal');
+  let poolCurrentPage = 1;
+  const poolPageSize = 20;
+
+  async function loadPoolPage(page) {
     const poolListEl = $('pool-list');
+    const paginationEl = $('pool-pagination');
+    poolCurrentPage = page;
 
     poolListEl.innerHTML = '<div class="loading-spinner"></div>';
-    modal.showModal();
+    if (paginationEl) paginationEl.style.display = 'none';
 
     try {
-      const data = await API.getPool('approved');
+      const data = await API.getPool('approved', poolCurrentPage, poolPageSize);
       if (!data.sources || data.sources.length === 0) {
         poolListEl.innerHTML = '<div class="empty-state"><p>暂无可用资源</p></div>';
         return;
@@ -691,9 +695,49 @@
         </div>
       `).join('');
 
+      // Render pagination
+      if (data.pagination && data.pagination.totalPages > 1 && paginationEl) {
+        const { totalPages } = data.pagination;
+        paginationEl.style.display = 'flex';
+        paginationEl.className = 'pagination'; 
+        paginationEl.style.justifyContent = 'center';
+        paginationEl.innerHTML = `
+          <button class="btn btn-ghost" id="pool-prev-page" ${poolCurrentPage <= 1 ? 'disabled' : ''}>上一页</button>
+          <span class="page-info" style="margin: 0 var(--space-md);">${poolCurrentPage} / ${totalPages}</span>
+          <button class="btn btn-ghost" id="pool-next-page" ${poolCurrentPage >= totalPages ? 'disabled' : ''}>下一页</button>
+          <div style="display:flex; align-items:center; margin-left: 16px; gap: 4px;">
+            <span style="font-size:var(--text-sm);">跳转到</span>
+            <input type="number" id="pool-jump-input" class="pagination-input" min="1" max="${totalPages}" value="${poolCurrentPage}">
+            <button class="btn btn-ghost" id="pool-jump-btn">Go</button>
+          </div>
+        `;
+
+        const prevBtn = $('pool-prev-page');
+        const nextBtn = $('pool-next-page');
+        const jumpBtn = $('pool-jump-btn');
+        const jumpInput = $('pool-jump-input');
+
+        if (prevBtn) prevBtn.addEventListener('click', () => loadPoolPage(poolCurrentPage - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => loadPoolPage(poolCurrentPage + 1));
+        if (jumpBtn) {
+          jumpBtn.addEventListener('click', () => {
+            let p = parseInt(jumpInput.value, 10);
+            if (p >= 1 && p <= totalPages) loadPoolPage(p);
+          });
+        }
+      } else if (paginationEl) {
+        paginationEl.style.display = 'none';
+      }
+
     } catch (err) {
       poolListEl.innerHTML = `<div class="empty-state"><p>加载失败: ${Feed.escapeHTML(err.message)}</p></div>`;
     }
+  }
+
+  $('btn-explore-pool').addEventListener('click', () => {
+    const modal = $('pool-modal');
+    modal.showModal();
+    loadPoolPage(1);
   });
 
   $('pool-modal').addEventListener('click', async (e) => {

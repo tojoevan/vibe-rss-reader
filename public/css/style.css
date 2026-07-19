@@ -1168,3 +1168,12 @@ input { font: inherit; color: inherit; }
 .icon-btn.is-spinning svg {
   animation: spin 0.8s linear infinite;
 }
+.pagination-input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
