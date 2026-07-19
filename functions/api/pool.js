@@ -24,8 +24,13 @@ export async function onRequestGet(context) {
   const status = url.searchParams.get('status') || 'approved';
 
   try {
-    // Admin can see all statuses
-    if (data.isAdmin && status !== 'approved') {
+    if (status !== 'approved') {
+      if (!data.isAdmin) {
+        return new Response(JSON.stringify({ error: '无管理员权限' }), {
+          status: 403, headers: corsHeaders()
+        });
+      }
+      
       const result = await env.RSS_DB.prepare(
         'SELECT * FROM feed_sources WHERE status = ? ORDER BY created_at DESC'
       ).bind(status).all();

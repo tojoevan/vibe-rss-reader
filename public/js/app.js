@@ -527,11 +527,11 @@
     // Admin button only appears if user is admin (checked after login)
     try {
       const data = await API.getPool('pending');
-      if (data.sources && data.sources.length > 0) {
+      if (data.sources) {
         showAdminButton(data.sources);
       }
     } catch {
-      // Not admin or no pending — silently ignore
+      // Not admin — silently ignore
     }
   }
 
