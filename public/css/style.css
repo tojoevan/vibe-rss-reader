@@ -1018,11 +1018,11 @@ input { font: inherit; color: inherit; }
   padding: var(--space-md) var(--space-lg);
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   box-shadow: var(--shadow-lg);
   font-size: var(--text-sm);
   pointer-events: auto;
-  animation: toastIn var(--transition-base) forwards;
+  animation: toastFadeIn var(--transition-base) forwards;
   max-width: 360px;
   overflow: hidden;
 }
@@ -1031,22 +1031,20 @@ input { font: inherit; color: inherit; }
   position: absolute;
   top: 0; bottom: 0; left: 0;
   width: 4px;
-  border-top-left-radius: calc(var(--radius-md) - 1px);
-  border-bottom-left-radius: calc(var(--radius-md) - 1px);
 }
 .toast.toast-success::before { background: var(--success); }
 .toast.toast-error::before { background: var(--danger); }
 .toast.toast-info::before { background: var(--info); }
 
-.toast.toast-out { animation: toastOut var(--transition-base) forwards; }
+.toast.toast-out { animation: toastFadeOut var(--transition-base) forwards; }
 
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(10px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes toastFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-@keyframes toastOut {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(10px); }
+@keyframes toastFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 /* ============================================================
