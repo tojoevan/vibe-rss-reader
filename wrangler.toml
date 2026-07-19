@@ -5,5 +5,5 @@ pages_build_output_dir = "public"
 
 [[d1_databases]]
 binding = "RSS_DB"
-database_name = "vibe-rss-db"
-database_id = "YOUR_D1_DATABASE_ID"
+database_name = "vibe-rss-reader-db"
+database_id = "5d26d05b-5c60-4721-8df3-8536492ddf8c"
