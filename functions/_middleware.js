@@ -12,18 +12,31 @@ let jwksCache = null;
 let jwksCacheTime = 0;
 const JWKS_CACHE_TTL = 3600_000; // 1 hour
 
-async function getClerkJWKS(clerkSecretKey) {
+async function getClerkJWKS(clerkPublishableKey) {
   const now = Date.now();
   if (jwksCache && (now - jwksCacheTime) < JWKS_CACHE_TTL) {
     return jwksCache;
   }
 
-  // Extract the Clerk Frontend API domain from the publishable key or use the secret key to get JWKS
-  // For Clerk, JWKS is available at https://<frontend-api>/.well-known/jwks.json
-  // We can derive the frontend API from the publishable key
-  const response = await fetch('https://fond-monkfish-66.clerk.accounts.dev/.well-known/jwks.json');
+  let clerkDomain = 'clerk.kapibala.icu';
+  if (clerkPublishableKey) {
+    try {
+      const parts = clerkPublishableKey.split('_');
+      if (parts.length >= 3) {
+        const decoded = atob(parts[2]);
+        if (decoded.endsWith('$')) {
+          clerkDomain = decoded.slice(0, -1);
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to parse clerk domain from key', err);
+    }
+  }
+
+  const jwksUrl = `https://${clerkDomain}/.well-known/jwks.json`;
+  const response = await fetch(jwksUrl);
   if (!response.ok) {
-    throw new Error('Failed to fetch Clerk JWKS');
+    throw new Error(`Failed to fetch Clerk JWKS from ${jwksUrl}`);
   }
   jwksCache = await response.json();
   jwksCacheTime = now;
@@ -114,7 +127,7 @@ export async function onRequest(context) {
   const token = authHeader.slice(7);
 
   try {
-    const jwks = await getClerkJWKS(env.CLERK_SECRET_KEY);
+    const jwks = await getClerkJWKS(env.CLERK_PUBLISHABLE_KEY);
     const payload = await verifyJWT(token, jwks);
 
     // Inject userId into context for downstream handlers
