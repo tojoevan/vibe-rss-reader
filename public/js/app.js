@@ -29,6 +29,14 @@
   // --- Toast Utility ---
   function toast(message, type = 'info') {
     const container = $('toast-container');
+    
+    // Use popover API to push toast container above native <dialog> if supported
+    try {
+      if (container.showPopover && !container.matches(':popover-open')) {
+        container.showPopover();
+      }
+    } catch(e) {}
+
     const el = document.createElement('div');
     el.className = `toast toast-${type}`;
     el.textContent = message;
@@ -685,15 +693,19 @@
         return;
       }
 
-      poolListEl.innerHTML = data.sources.map(source => `
+      poolListEl.innerHTML = data.sources.map(source => {
+        const isSub = state.subscriptions.some(s => s.url === source.url || s.feed_id === source.id);
+        const btnText = isSub ? '已订阅' : '订阅';
+        const btnDisabled = isSub ? 'disabled' : '';
+        return `
         <div class="pool-item" data-source-id="${source.id}">
           <div class="pool-item-info">
             <div class="pool-item-title">${Feed.escapeHTML(source.title || source.url)}</div>
             <div class="pool-item-url">${Feed.escapeHTML(source.url)}</div>
           </div>
-          <button class="btn btn-primary btn-sm pool-subscribe-btn" data-url="${Feed.escapeHTML(source.url)}">订阅</button>
+          <button class="btn btn-primary btn-sm pool-subscribe-btn" data-url="${Feed.escapeHTML(source.url)}" ${btnDisabled}>${btnText}</button>
         </div>
-      `).join('');
+      `}).join('');
 
       // Render pagination
       if (data.pagination && paginationEl) {
