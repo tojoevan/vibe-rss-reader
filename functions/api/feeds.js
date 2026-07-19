@@ -108,49 +108,61 @@ export async function onRequestGet(context) {
       if (feedId) {
         query = `
           SELECT a.*, fs.title as source_title, fs.favicon_url,
-                 COALESCE(uas.is_read, 0) as is_read,
+                 0 as is_read,
                  COALESCE(uas.is_favorited, 0) as is_favorited,
                  COALESCE(uas.is_read_later, 0) as is_read_later
           FROM articles a
           JOIN feed_sources fs ON a.feed_id = fs.id
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE a.feed_id = ? AND COALESCE(uas.is_read, 0) = 0
+          WHERE a.feed_id = ? 
+            AND NOT EXISTS (
+              SELECT 1 FROM user_article_status 
+              WHERE user_id = ? AND article_id = a.id AND is_read = 1
+            )
           ORDER BY a.published_at DESC
           LIMIT ? OFFSET ?
         `;
-        params = [userId, userId, feedId, pageSize, offset];
+        params = [userId, userId, feedId, userId, pageSize, offset];
 
         countQuery = `
           SELECT COUNT(*) as total
           FROM articles a
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
-          LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE a.feed_id = ? AND COALESCE(uas.is_read, 0) = 0
+          WHERE a.feed_id = ? 
+            AND NOT EXISTS (
+              SELECT 1 FROM user_article_status 
+              WHERE user_id = ? AND article_id = a.id AND is_read = 1
+            )
         `;
-        countParams = [userId, userId, feedId];
+        countParams = [userId, feedId, userId];
       } else {
         query = `
           SELECT a.*, fs.title as source_title, fs.favicon_url,
-                 COALESCE(uas.is_read, 0) as is_read,
+                 0 as is_read,
                  COALESCE(uas.is_favorited, 0) as is_favorited,
                  COALESCE(uas.is_read_later, 0) as is_read_later
           FROM articles a
           JOIN feed_sources fs ON a.feed_id = fs.id
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE COALESCE(uas.is_read, 0) = 0
+          WHERE NOT EXISTS (
+            SELECT 1 FROM user_article_status 
+            WHERE user_id = ? AND article_id = a.id AND is_read = 1
+          )
           ORDER BY a.published_at DESC
           LIMIT ? OFFSET ?
         `;
-        params = [userId, userId, pageSize, offset];
+        params = [userId, userId, userId, pageSize, offset];
 
         countQuery = `
           SELECT COUNT(*) as total
           FROM articles a
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
-          LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE COALESCE(uas.is_read, 0) = 0
+          WHERE NOT EXISTS (
+            SELECT 1 FROM user_article_status 
+            WHERE user_id = ? AND article_id = a.id AND is_read = 1
+          )
         `;
         countParams = [userId, userId];
       }
