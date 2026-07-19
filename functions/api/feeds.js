@@ -115,7 +115,7 @@ export async function onRequestGet(context) {
           JOIN feed_sources fs ON a.feed_id = fs.id
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE a.feed_id = ? AND (uas.is_read IS NULL OR uas.is_read = 0)
+          WHERE a.feed_id = ? AND COALESCE(uas.is_read, 0) = 0
           ORDER BY a.published_at DESC
           LIMIT ? OFFSET ?
         `;
@@ -126,7 +126,7 @@ export async function onRequestGet(context) {
           FROM articles a
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE a.feed_id = ? AND (uas.is_read IS NULL OR uas.is_read = 0)
+          WHERE a.feed_id = ? AND COALESCE(uas.is_read, 0) = 0
         `;
         countParams = [userId, userId, feedId];
       } else {
@@ -139,7 +139,7 @@ export async function onRequestGet(context) {
           JOIN feed_sources fs ON a.feed_id = fs.id
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE (uas.is_read IS NULL OR uas.is_read = 0)
+          WHERE COALESCE(uas.is_read, 0) = 0
           ORDER BY a.published_at DESC
           LIMIT ? OFFSET ?
         `;
@@ -150,7 +150,7 @@ export async function onRequestGet(context) {
           FROM articles a
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE (uas.is_read IS NULL OR uas.is_read = 0)
+          WHERE COALESCE(uas.is_read, 0) = 0
         `;
         countParams = [userId, userId];
       }
