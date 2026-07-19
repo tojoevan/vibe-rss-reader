@@ -2,13 +2,23 @@
  * Auth — Clerk Authentication Module
  */
 window.Auth = (() => {
-  const CLERK_PK = 'pk_test_Zm9uZC1tb25rZmlzaC02Ni5jbGVyay5hY2NvdW50cy5kZXYk';
   let clerkInstance = null;
   let currentUser = null;
 
   async function init() {
     try {
-      clerkInstance = new window.Clerk(CLERK_PK);
+      // Fetch public configuration from backend
+      const res = await fetch('/api/config');
+      const config = await res.json();
+      const publishableKey = config.clerkPublishableKey;
+
+      if (!publishableKey) {
+        console.error('Clerk Publishable Key is missing from environment variables.');
+        handleAuthChange({ user: null });
+        return;
+      }
+
+      clerkInstance = new window.Clerk(publishableKey);
       await clerkInstance.load();
 
       // Listen for auth state changes
