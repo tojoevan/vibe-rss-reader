@@ -256,6 +256,13 @@
         Reader.renderArticleList(cached.articles, articleList);
         Reader.renderPagination(cached.pagination);
         updateMarkAllReadVisibility();
+        
+        // Auto-select first article on PC
+        if (window.innerWidth > 768 && cached.articles.length > 0) {
+          const firstRow = articleList.querySelector('.article-row');
+          if (firstRow) firstRow.click();
+        }
+        
         return;
       }
     }
@@ -275,6 +282,12 @@
       Reader.renderArticleList(data.articles, articleList);
       Reader.renderPagination(data.pagination);
       updateMarkAllReadVisibility();
+
+      // Auto-select first article on PC
+      if (window.innerWidth > 768 && data.articles && data.articles.length > 0) {
+        const firstRow = articleList.querySelector('.article-row');
+        if (firstRow) firstRow.click();
+      }
 
     } catch (err) {
       console.error('Load articles failed:', err);
