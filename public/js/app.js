@@ -468,12 +468,23 @@
         const result = await API.updateArticleStatus(parseInt(articleId), action);
         actionBtn.classList.toggle('is-active');
 
-        // Update article row styling
-        if (action === 'read') {
-          const row = actionBtn.closest('.article-row');
-          if (row) {
+        // Update article row styling and removal logic
+        const row = actionBtn.closest('.article-row');
+        if (row) {
+          if (action === 'read') {
             row.classList.toggle('is-read', !!result.is_read);
-            if (state.currentTab === 'latest' && !!result.is_read) {
+            if ((state.currentTab === 'latest' && !!result.is_read) ||
+                (state.currentTab === 'read' && !result.is_read)) {
+              row.classList.add('is-hiding');
+              setTimeout(() => row.remove(), 300);
+            }
+          } else if (action === 'later') {
+            if (state.currentTab === 'later' && !result.is_read_later) {
+              row.classList.add('is-hiding');
+              setTimeout(() => row.remove(), 300);
+            }
+          } else if (action === 'fav') {
+            if (state.currentTab === 'favorites' && !result.is_favorited) {
               row.classList.add('is-hiding');
               setTimeout(() => row.remove(), 300);
             }
@@ -672,9 +683,41 @@
     }
 
     try {
-      await API.updateArticleStatus(articleId, action);
+      const result = await API.updateArticleStatus(articleId, action);
       btn.classList.toggle('is-active');
       Store.invalidateArticles();
+
+      // Synchronize list row visual state
+      const row = document.querySelector(`.article-row[data-id="${articleId}"]`);
+      if (row) {
+        if (action === 'read') {
+          row.classList.toggle('is-read', !!result.is_read);
+          const readBtn = row.querySelector('[data-action="read"]');
+          if (readBtn) readBtn.classList.toggle('is-active', !!result.is_read);
+
+          if ((state.currentTab === 'latest' && !!result.is_read) ||
+              (state.currentTab === 'read' && !result.is_read)) {
+            row.classList.add('is-hiding');
+            setTimeout(() => row.remove(), 300);
+          }
+        } else if (action === 'later') {
+          const laterBtn = row.querySelector('[data-action="later"]');
+          if (laterBtn) laterBtn.classList.toggle('is-active', !!result.is_read_later);
+          
+          if (state.currentTab === 'later' && !result.is_read_later) {
+            row.classList.add('is-hiding');
+            setTimeout(() => row.remove(), 300);
+          }
+        } else if (action === 'fav') {
+          const favBtn = row.querySelector('[data-action="fav"]');
+          if (favBtn) favBtn.classList.toggle('is-active', !!result.is_favorited);
+
+          if (state.currentTab === 'favorites' && !result.is_favorited) {
+            row.classList.add('is-hiding');
+            setTimeout(() => row.remove(), 300);
+          }
+        }
+      }
     } catch (err) {
       toast(err.message, 'error');
     }
