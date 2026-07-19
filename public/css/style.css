@@ -1233,11 +1233,11 @@ input { font: inherit; color: inherit; }
   display: none;
 }
 .dropdown-item {
-  width: 100%; text-align: left; padding: 10px var(--space-md);
+  width: 100%; text-align: left; padding: var(--space-sm) var(--space-lg);
   border: none; background: transparent;
   color: var(--text-primary); cursor: pointer;
   transition: all 0.2s ease;
-  font-size: var(--text-sm);
+  font-size: 13px;
   display: flex; align-items: center; gap: 8px;
 }
 .dropdown-item:hover {
