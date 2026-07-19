@@ -906,6 +906,89 @@
   $('admin-modal-close').addEventListener('click', () => $('admin-modal').close());
 
   // ============================================================
+  // SEARCH MODAL
+  // ============================================================
+  const searchModal = $('search-modal');
+  const searchForm = $('search-form');
+  const searchInput = $('search-input');
+  const searchResults = $('search-results');
+  let searchArticlesData = [];
+
+  $('btn-search')?.addEventListener('click', () => {
+    searchModal.showModal();
+    setTimeout(() => searchInput.focus(), 100);
+  });
+
+  $('search-modal-close')?.addEventListener('click', () => {
+    searchModal.close();
+  });
+
+  searchForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    searchResults.innerHTML = '<div class="loading-spinner"></div>';
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {
+        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
+      });
+      if (!res.ok) throw new Error('Search failed');
+      const data = await res.json();
+      searchArticlesData = data.articles || [];
+      
+      // Cache articles for Reader
+      searchArticlesData.forEach(a => Store.setArticle(a.id, a));
+
+      if (searchArticlesData.length === 0) {
+        searchResults.innerHTML = '<div class="empty-state"><p>未找到匹配的资讯</p></div>';
+      } else {
+        Reader.renderArticleList(searchArticlesData, searchResults);
+      }
+    } catch (err) {
+      searchResults.innerHTML = `<div class="empty-state"><p>搜索出错: ${err.message}</p></div>`;
+    }
+  });
+
+  searchResults?.addEventListener('click', async (e) => {
+    const actionBtn = e.target.closest('.row-action-btn');
+    if (actionBtn) {
+      e.stopPropagation();
+      const articleId = actionBtn.dataset.articleId;
+      const action = actionBtn.dataset.action;
+      try {
+        const result = await API.updateArticleStatus(parseInt(articleId), action);
+        actionBtn.classList.toggle('is-active');
+        const row = actionBtn.closest('.article-row');
+        if (row && action === 'read') row.classList.toggle('is-read', !!result.is_read);
+        Store.invalidateArticles();
+      } catch (err) {
+        toast(err.message, 'error');
+      }
+      return;
+    }
+
+    const articleRow = e.target.closest('.article-row');
+    if (articleRow) {
+      const articleId = parseInt(articleRow.dataset.id);
+      searchResults.querySelectorAll('.article-row').forEach(r => r.classList.remove('active'));
+      articleRow.classList.add('active');
+
+      const article = searchArticlesData.find(a => a.id === articleId) || Store.getArticle(articleId);
+      if (article) {
+        Reader.showArticle(article);
+        if (window.innerWidth <= 768) {
+          searchModal.close();
+        } else {
+          // On PC, we can optionally keep the modal open, or close it to view the article.
+          // Let's close it so the user can see the reader clearly.
+          searchModal.close();
+        }
+      }
+    }
+  });
+
+  // ============================================================
   // GUEST CONTENT
   // ============================================================
   async function loadGuestContent() {
