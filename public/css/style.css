@@ -1220,3 +1220,29 @@ input { font: inherit; color: inherit; }
   background: var(--bg-primary);
   color: var(--text-primary);
 }
+.dropdown-menu {
+  position: absolute; right: 0; top: 100%; margin-top: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  min-width: 140px;
+  z-index: 1000;
+  flex-direction: column;
+  overflow: hidden;
+  display: none;
+}
+.dropdown-item {
+  width: 100%; text-align: left; padding: 10px var(--space-md);
+  border: none; background: transparent;
+  color: var(--text-primary); cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--text-sm);
+  display: flex; align-items: center; gap: 8px;
+}
+.dropdown-item:hover {
+  background: var(--bg-hover);
+}
+.dropdown-item.text-danger {
+  color: var(--danger);
+}
