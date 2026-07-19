@@ -135,7 +135,7 @@
     `;
 
     state.subscriptions.forEach(sub => {
-      const li = document.createElement('li');
+      const li = document.createElement('div');
       li.className = `feed-item ${state.currentFeedId == sub.feed_id ? 'active' : ''}`;
       li.dataset.feed = sub.feed_id;
       li.dataset.subId = sub.id;
