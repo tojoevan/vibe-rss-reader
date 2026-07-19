@@ -641,7 +641,7 @@ input { font: inherit; color: inherit; }
 .row-action-btn.is-active { 
   color: var(--accent); 
   opacity: 1 !important; /* always visible */
-  background: var(--bg-hover);
+  background: var(--bg-active);
 }
 .row-action-btn.is-active svg {
   stroke-width: 2.2; /* bold */
