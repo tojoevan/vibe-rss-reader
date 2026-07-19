@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=9">
+  <link rel="stylesheet" href="/css/style.css?v=3?v=9">
 </head>
 <body>
   <!-- ===== Header ===== -->
@@ -59,31 +59,31 @@
     <!-- Sidebar: Subscription list -->
     <aside class="sidebar" id="sidebar">
       <!-- PC Categories -->
-      <ul class="pc-categories" id="pc-categories" style="list-style: none; padding: 0; margin: 0;">
-        <li class="feed-item active" data-tab="latest" id="pc-cat-latest">
+      <div class="pc-categories" id="pc-categories" style="list-style: none; padding: 0; margin: 0;">
+        <div class="feed-item active" data-tab="latest" id="pc-cat-latest">
           <span class="feed-name">最新</span>
-        </li>
-        <li class="feed-item" data-tab="read" id="pc-cat-read">
+        </div>
+        <div class="feed-item" data-tab="read" id="pc-cat-read">
           <span class="feed-name">已阅读</span>
-        </li>
-        <li class="feed-item" data-tab="later" id="pc-cat-later">
+        </div>
+        <div class="feed-item" data-tab="later" id="pc-cat-later">
           <span class="feed-name">稍后阅读</span>
-        </li>
-        <li class="feed-item" data-tab="favorites" id="pc-cat-favorites">
+        </div>
+        <div class="feed-item" data-tab="favorites" id="pc-cat-favorites">
           <span class="feed-name">收藏</span>
-        </li>
-      </ul>
+        </div>
+      </div>
 
       <!-- Subscription list -->
-      <ul class="feed-list" id="feed-list" style="margin-top: var(--space-sm);">
-        <li class="feed-item active" data-feed="all" id="feed-all">
+      <div class="feed-list" id="feed-list" style="margin-top: var(--space-sm);">
+        <div class="feed-item active" data-feed="all" id="feed-all">
           <span class="feed-icon">📰</span>
           <span class="feed-name">全部文章</span>
           <button class="feed-refresh" title="刷新文章" aria-label="刷新">
             <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M14.5 9a5.5 5.5 0 11-1.6-3.9M14.5 3v2.1h-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-        </li>
-      </ul>
+        </div>
+      </div>
 
 
       <!-- Footer Actions -->
@@ -243,6 +243,6 @@
   <script src="/js/auth.js?v=2"></script>
   <script src="/js/feed.js?v=2"></script>
   <script src="/js/reader.js?v=2"></script>
-  <script src="/js/app.js?v=2"></script>
+  <script src="/js/app.js?v=3"></script>
 </body>
 </html>

@@ -125,13 +125,13 @@
   function renderSubscriptionList() {
     // Keep the "all" item
     feedList.innerHTML = `
-      <li class="feed-item ${state.currentFeedId === 'all' ? 'active' : ''}" data-feed="all" id="feed-all">
+      <div class="feed-item ${state.currentFeedId === 'all' ? 'active' : ''}" data-feed="all" id="feed-all">
         <span class="feed-icon">📰</span>
         <span class="feed-name">全部文章</span>
         <button class="feed-refresh" title="刷新文章" aria-label="刷新">
           <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M14.5 9a5.5 5.5 0 11-1.6-3.9M14.5 3v2.1h-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-      </li>
+      </div>
     `;
 
     state.subscriptions.forEach(sub => {
