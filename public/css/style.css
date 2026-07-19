@@ -921,6 +921,7 @@ input { font: inherit; color: inherit; }
   margin-bottom: var(--space-lg);
 }
 .modal-header h2 { font-size: var(--text-lg); font-weight: 600; }
+.pool-modal-hint { font-size: var(--text-sm); color: var(--text-muted); font-weight: normal; margin-left: 8px; }
 
 .modal-body {
   max-height: 60vh;
@@ -1129,6 +1130,13 @@ input { font: inherit; color: inherit; }
     right: var(--space-md);
   }
   .toast { max-width: 100%; }
+
+  .pool-modal-hint {
+    display: block;
+    margin-left: 0;
+    margin-top: 4px;
+    font-size: 12px;
+  }
 }
 
 /* Desktop: hide sidebar toggle */
