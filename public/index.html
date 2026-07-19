@@ -235,8 +235,8 @@
   <dialog class="modal modal-xl modal-sharp" id="search-modal">
     <div class="modal-content" style="max-height: 80vh; display: flex; flex-direction: column;">
       <div class="modal-header" style="border-bottom: 1px solid var(--border);">
-        <form id="search-form" style="width: 100%; display: flex; gap: var(--space-md); margin-right: var(--space-md);">
-          <input type="search" id="search-input" placeholder="输入关键字搜索全文..." autocomplete="off" style="flex: 1; padding: var(--space-sm) var(--space-md); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); font-family: var(--font-sans); font-size: var(--text-base);">
+        <form id="search-form" style="flex: 1; display: flex; gap: var(--space-sm); margin-right: var(--space-md); min-width: 0;">
+          <input type="search" id="search-input" placeholder="输入关键字搜索全文..." autocomplete="off" style="flex: 1; min-width: 0; padding: var(--space-sm) var(--space-md); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); font-family: var(--font-sans); font-size: var(--text-base);">
           <button type="submit" class="btn btn-primary" id="btn-submit-search">搜索</button>
         </form>
         <button class="icon-btn modal-close" id="search-modal-close" aria-label="关闭">
