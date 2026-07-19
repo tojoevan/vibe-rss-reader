@@ -427,6 +427,11 @@ input { font: inherit; color: inherit; }
   transition: all var(--transition-fast);
   font-size: var(--text-sm);
   position: relative;
+  list-style: none;
+}
+.feed-item::marker {
+  display: none;
+  content: "";
 }
 .feed-item:hover { background: var(--bg-hover); }
 .feed-item.active {
