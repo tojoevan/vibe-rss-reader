@@ -152,17 +152,31 @@
 
   // --- Add Feed ---
   $('btn-add-feed').addEventListener('click', () => {
-    const form = $('add-feed-form');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    if (form.style.display === 'block') {
-      $('feed-url-input').focus();
-    }
+    const modal = $('add-feed-modal');
+    modal.showModal();
+    $('feed-url-input').focus();
   });
 
   $('btn-cancel-feed').addEventListener('click', () => {
-    $('add-feed-form').style.display = 'none';
+    $('add-feed-modal').close();
     $('feed-url-input').value = '';
     $('feed-form-hint').textContent = '';
+  });
+
+  if ($('add-feed-modal-close')) {
+    $('add-feed-modal-close').addEventListener('click', () => {
+      $('add-feed-modal').close();
+      $('feed-url-input').value = '';
+      $('feed-form-hint').textContent = '';
+    });
+  }
+
+  $('add-feed-modal').addEventListener('click', (e) => {
+    if (e.target === $('add-feed-modal')) {
+      $('add-feed-modal').close();
+      $('feed-url-input').value = '';
+      $('feed-form-hint').textContent = '';
+    }
   });
 
   $('btn-submit-feed').addEventListener('click', async () => {
@@ -186,10 +200,10 @@
       hint.style.color = 'var(--text-muted)';
       hint.textContent = '提交中…';
       const result = await API.addSubscription(url);
-      toast(result.message || '订阅已添加', 'success');
-      $('add-feed-form').style.display = 'none';
       $('feed-url-input').value = '';
-      hint.textContent = '';
+      $('feed-form-hint').textContent = '';
+      $('add-feed-modal').close();
+      toast(result.message || '订阅已添加', 'success');
       await loadSubscriptions();
     } catch (err) {
       hint.style.color = 'var(--danger)';
