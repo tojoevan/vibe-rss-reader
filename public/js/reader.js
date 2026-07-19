@@ -116,7 +116,7 @@ window.Reader = (() => {
     if (!articles || articles.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
-          <p>📭 暂无文章</p>
+          <p>暂无文章</p>
           <p class="text-muted">试试刷新或添加新的 RSS 订阅</p>
         </div>
       `;
