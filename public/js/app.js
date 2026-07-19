@@ -930,11 +930,7 @@
 
     searchResults.innerHTML = '<div class="loading-spinner"></div>';
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {
-        headers: { 'Authorization': `Bearer ${Auth.getToken()}` }
-      });
-      if (!res.ok) throw new Error('Search failed');
-      const data = await res.json();
+      const data = await API.search(query);
       searchArticlesData = data.articles || [];
       
       // Cache articles for Reader

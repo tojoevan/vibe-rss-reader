@@ -68,6 +68,11 @@ window.API = (() => {
     },
 
     // --- Articles ---
+    search(query, page = 1, pageSize = 20) {
+      const params = new URLSearchParams({ q: query, page, pageSize });
+      return request(`/api/search?${params}`);
+    },
+
     updateArticleStatus(articleId, action) {
       return request('/api/articles', {
         method: 'PUT',
