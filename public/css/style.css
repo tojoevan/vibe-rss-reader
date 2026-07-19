@@ -600,15 +600,13 @@ input { font: inherit; color: inherit; }
 
 .article-row-time { white-space: nowrap; }
 
-/* Row actions (visible on hover / always on mobile) */
+/* Row actions (visible on hover / active buttons always visible) */
 .article-row-actions {
   display: flex;
   gap: 2px;
   flex-shrink: 0;
-  opacity: 0;
   transition: opacity var(--transition-fast);
 }
-.article-row:hover .article-row-actions { opacity: 1; }
 
 .row-action-btn {
   width: 28px;
@@ -621,9 +619,18 @@ input { font: inherit; color: inherit; }
   align-items: center;
   justify-content: center;
   transition: all var(--transition-fast);
+  opacity: 0; /* hidden by default */
 }
+.article-row:hover .row-action-btn { opacity: 1; }
+
 .row-action-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
-.row-action-btn.is-active { color: var(--accent); }
+.row-action-btn.is-active { 
+  color: var(--accent); 
+  opacity: 1; /* always visible */
+}
+.row-action-btn.is-active svg {
+  stroke-width: 2.2; /* bold */
+}
 
 /* --- Empty & Loading --- */
 .empty-state {
@@ -1043,13 +1050,15 @@ input { font: inherit; color: inherit; }
 
   /* Mobile article row: always show actions inline */
   .article-row-actions {
-    opacity: 1;
     flex-direction: row;
     gap: 4px;
     margin-left: auto; /* push to right if needed, or let it flow naturally */
   }
-
-  .row-action-btn { width: 24px; height: 24px; }
+  .row-action-btn { 
+    opacity: 1; 
+    width: 24px; 
+    height: 24px; 
+  }
 
   .mobile-tabs { display: flex; }
 
