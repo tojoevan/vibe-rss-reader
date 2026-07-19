@@ -380,6 +380,7 @@
     if (!forceRefresh) {
       const cached = Store.getArticles(cacheKey);
       if (cached) {
+        state.articles = cached.articles;
         Reader.renderArticleList(cached.articles, articleList);
         Reader.renderPagination(cached.pagination);
         updateMarkAllReadVisibility();
@@ -406,6 +407,7 @@
       );
 
       Store.setArticles(cacheKey, data);
+      state.articles = data.articles || [];
       Reader.renderArticleList(data.articles, articleList);
       Reader.renderPagination(data.pagination);
       updateMarkAllReadVisibility();
