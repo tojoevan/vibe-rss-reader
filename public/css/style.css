@@ -881,6 +881,7 @@ input { font: inherit; color: inherit; }
   max-width: min(90vw, 560px);
   width: 100%;
   padding: 0;
+  margin: auto;
   color: var(--text-primary);
 }
 .modal::backdrop {
