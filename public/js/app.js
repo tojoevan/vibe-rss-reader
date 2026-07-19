@@ -217,6 +217,70 @@
     }
   });
 
+  // --- OPML Import ---
+  if ($('btn-import-opml')) {
+    $('btn-import-opml').addEventListener('click', () => {
+      $('opml-file-input').click();
+    });
+
+    $('opml-file-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const hint = $('feed-form-hint');
+      hint.textContent = '正在读取文件...';
+      hint.style.color = 'var(--text-muted)';
+      const btnImport = $('btn-import-opml');
+      btnImport.disabled = true;
+
+      try {
+        const text = await file.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, 'text/xml');
+        const outlines = xmlDoc.querySelectorAll('outline[xmlUrl]');
+        
+        const urls = [];
+        outlines.forEach(o => {
+          const url = o.getAttribute('xmlUrl');
+          if (url) urls.push(url);
+        });
+
+        if (urls.length === 0) {
+          hint.textContent = '未能从文件中找到有效的 RSS 订阅链接';
+          hint.style.color = 'var(--danger)';
+          btnImport.disabled = false;
+          return;
+        }
+
+        hint.textContent = `发现 ${urls.length} 个订阅源，正在导入中...`;
+        
+        let successCount = 0;
+        
+        for (let i = 0; i < urls.length; i++) {
+          try {
+            await API.addSubscription(urls[i]);
+            successCount++;
+          } catch (err) {
+            // Soft ignore errors like already subscribed
+          }
+          hint.textContent = `正在导入: ${i + 1} / ${urls.length}`;
+        }
+
+        $('opml-file-input').value = '';
+        $('feed-url-input').value = '';
+        $('feed-form-hint').textContent = '';
+        $('add-feed-modal').close();
+        toast(`导入完成：成功提交 ${successCount} 个，忽略/已存在 ${urls.length - successCount} 个`, 'info');
+        await loadSubscriptions();
+      } catch (err) {
+        hint.textContent = '解析 OPML 文件失败';
+        hint.style.color = 'var(--danger)';
+        console.error(err);
+      }
+      btnImport.disabled = false;
+    });
+  }
+
   // --- Feed List Click ---
   feedList.addEventListener('click', async (e) => {
     const refreshBtn = e.target.closest('.feed-refresh');

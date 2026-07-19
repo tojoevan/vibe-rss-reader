@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=5">
+  <link rel="stylesheet" href="/css/style.css?v=6">
 </head>
 <body>
   <!-- ===== Header ===== -->
@@ -205,7 +205,7 @@
     </div>
   </dialog>
 
-  <dialog class="modal modal-sm" id="add-feed-modal">
+  <dialog class="modal modal-xl modal-sharp" id="add-feed-modal">
     <div class="modal-content">
       <div class="modal-header">
         <h2>添加订阅</h2>
@@ -217,6 +217,9 @@
         <input type="url" id="feed-url-input" placeholder="输入 RSS 订阅链接…" autocomplete="off" style="width:100%; padding:var(--space-sm) var(--space-md); margin-bottom:var(--space-md); border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-primary); color:var(--text-primary); font-family:var(--font-sans); font-size:var(--text-base);">
         <p class="form-hint" id="feed-form-hint"></p>
         <div class="modal-actions">
+          <input type="file" id="opml-file-input" accept=".opml,text/xml,application/xml" style="display:none;">
+          <button class="btn btn-ghost" id="btn-import-opml" style="margin-right: auto;">导入 OPML</button>
+          
           <button class="btn btn-ghost" id="btn-cancel-feed">取消</button>
           <button class="btn btn-primary" id="btn-submit-feed">添加</button>
         </div>

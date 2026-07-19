@@ -889,7 +889,9 @@ input { font: inherit; color: inherit; }
   backdrop-filter: blur(4px);
 }
 .modal-lg { max-width: min(90vw, 720px); }
+.modal-xl { max-width: min(90vw, 800px); }
 .modal-sm { max-width: min(90vw, 400px); }
+.modal-sharp .modal-content { border-radius: var(--radius-sm); }
 
 .modal-content {
   background: var(--bg-tertiary);
