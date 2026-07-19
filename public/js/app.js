@@ -471,7 +471,13 @@
         // Update article row styling
         if (action === 'read') {
           const row = actionBtn.closest('.article-row');
-          if (row) row.classList.toggle('is-read', !!result.is_read);
+          if (row) {
+            row.classList.toggle('is-read', !!result.is_read);
+            if (state.currentTab === 'latest' && !!result.is_read) {
+              row.classList.add('is-hiding');
+              setTimeout(() => row.remove(), 300);
+            }
+          }
         }
 
         Store.invalidateArticles();

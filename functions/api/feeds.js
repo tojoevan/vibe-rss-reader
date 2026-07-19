@@ -115,7 +115,7 @@ export async function onRequestGet(context) {
           JOIN feed_sources fs ON a.feed_id = fs.id
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
-          WHERE a.feed_id = ?
+          WHERE a.feed_id = ? AND (uas.is_read IS NULL OR uas.is_read = 0)
           ORDER BY a.published_at DESC
           LIMIT ? OFFSET ?
         `;
@@ -125,9 +125,10 @@ export async function onRequestGet(context) {
           SELECT COUNT(*) as total
           FROM articles a
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
-          WHERE a.feed_id = ?
+          LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
+          WHERE a.feed_id = ? AND (uas.is_read IS NULL OR uas.is_read = 0)
         `;
-        countParams = [userId, feedId];
+        countParams = [userId, userId, feedId];
       } else {
         query = `
           SELECT a.*, fs.title as source_title, fs.favicon_url,
@@ -138,6 +139,7 @@ export async function onRequestGet(context) {
           JOIN feed_sources fs ON a.feed_id = fs.id
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
           LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
+          WHERE (uas.is_read IS NULL OR uas.is_read = 0)
           ORDER BY a.published_at DESC
           LIMIT ? OFFSET ?
         `;
@@ -147,8 +149,10 @@ export async function onRequestGet(context) {
           SELECT COUNT(*) as total
           FROM articles a
           JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
+          LEFT JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ?
+          WHERE (uas.is_read IS NULL OR uas.is_read = 0)
         `;
-        countParams = [userId];
+        countParams = [userId, userId];
       }
     }
 

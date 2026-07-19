@@ -559,10 +559,23 @@ input { font: inherit; color: inherit; }
   padding: var(--space-md) var(--space-md);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease, transform 0.3s ease;
   border-bottom: 1px solid var(--border);
   content-visibility: auto;
   contain-intrinsic-block-size: auto 72px;
+  max-height: 200px;
+  overflow: hidden;
+}
+.article-row.is-hiding {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-width: 0;
+  transform: translateX(-20px);
+  content-visibility: visible;
 }
 .article-row:hover { background: var(--bg-hover); }
 .article-row.active { background: var(--accent-dim); }
