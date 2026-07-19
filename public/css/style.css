@@ -138,7 +138,8 @@ body {
   background: var(--bg-primary);
   line-height: 1.6;
   min-height: 100dvh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -1029,6 +1030,8 @@ input { font: inherit; color: inherit; }
   position: absolute;
   top: 0; bottom: 0; left: 0;
   width: 4px;
+  border-top-left-radius: calc(var(--radius-md) - 1px);
+  border-bottom-left-radius: calc(var(--radius-md) - 1px);
 }
 .toast.toast-success::before { background: var(--success); }
 .toast.toast-error::before { background: var(--danger); }
