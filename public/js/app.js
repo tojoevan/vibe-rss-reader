@@ -913,24 +913,20 @@
   const searchInput = $('search-input');
   const searchResults = $('search-results');
   let searchArticlesData = [];
+  let searchCurrentPage = 1;
+  const searchPageSize = 20;
+  let searchCurrentQuery = '';
 
-  $('btn-search')?.addEventListener('click', () => {
-    searchModal.showModal();
-    setTimeout(() => searchInput.focus(), 100);
-  });
-
-  $('search-modal-close')?.addEventListener('click', () => {
-    searchModal.close();
-  });
-
-  searchForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const query = searchInput.value.trim();
-    if (!query) return;
+  async function loadSearchPage(page, query) {
+    searchCurrentPage = page;
+    searchCurrentQuery = query;
+    const paginationEl = $('search-pagination');
 
     searchResults.innerHTML = '<div class="loading-spinner"></div>';
+    if (paginationEl) paginationEl.style.display = 'none';
+
     try {
-      const data = await API.search(query);
+      const data = await API.search(query, searchCurrentPage, searchPageSize);
       searchArticlesData = data.articles || [];
       
       // Cache articles for Reader
@@ -941,9 +937,59 @@
       } else {
         Reader.renderArticleList(searchArticlesData, searchResults);
       }
+      
+      // Render pagination
+      if (data.pagination && paginationEl && data.pagination.totalPages > 1) {
+        const { totalPages } = data.pagination;
+        paginationEl.style.display = 'flex';
+        paginationEl.className = 'pagination'; 
+        paginationEl.style.justifyContent = 'center';
+        paginationEl.innerHTML = `
+          <button class="btn btn-ghost" id="search-prev-page" ${searchCurrentPage <= 1 ? 'disabled' : ''}>上一页</button>
+          <span class="page-info" style="margin: 0 var(--space-md);">${searchCurrentPage} / ${Math.max(1, totalPages)}</span>
+          <button class="btn btn-ghost" id="search-next-page" ${searchCurrentPage >= totalPages ? 'disabled' : ''}>下一页</button>
+          <div style="display:flex; align-items:center; margin-left: var(--space-md); gap: 4px; white-space: nowrap;">
+            <span style="font-size:var(--text-sm);">跳转到</span>
+            <input type="number" id="search-jump-input" class="pagination-input" min="1" max="${Math.max(1, totalPages)}" value="${searchCurrentPage}">
+            <button class="btn btn-ghost" id="search-jump-btn">Go</button>
+          </div>
+        `;
+
+        const prevBtn = $('search-prev-page');
+        const nextBtn = $('search-next-page');
+        const jumpBtn = $('search-jump-btn');
+
+        if (prevBtn) prevBtn.addEventListener('click', () => loadSearchPage(searchCurrentPage - 1, searchCurrentQuery));
+        if (nextBtn) nextBtn.addEventListener('click', () => loadSearchPage(searchCurrentPage + 1, searchCurrentQuery));
+        if (jumpBtn) {
+          jumpBtn.addEventListener('click', () => {
+            const input = $('search-jump-input');
+            const pageNum = parseInt(input.value);
+            if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
+              loadSearchPage(pageNum, searchCurrentQuery);
+            }
+          });
+        }
+      }
     } catch (err) {
       searchResults.innerHTML = `<div class="empty-state"><p>搜索出错: ${err.message}</p></div>`;
     }
+  }
+
+  $('btn-search')?.addEventListener('click', () => {
+    searchModal.showModal();
+    setTimeout(() => searchInput.focus(), 100);
+  });
+
+  $('search-modal-close')?.addEventListener('click', () => {
+    searchModal.close();
+  });
+
+  searchForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    loadSearchPage(1, query);
   });
 
   searchResults?.addEventListener('click', async (e) => {
