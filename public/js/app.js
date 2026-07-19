@@ -357,7 +357,7 @@
       feedItem.classList.add('active');
 
       const feedName = feedItem.querySelector('.feed-name')?.textContent || '全部文章';
-      feedColumnTitle.textContent = feedName;
+      if (feedColumnTitle) feedColumnTitle.textContent = feedName;
 
       // Mobile: close sidebar
       if (window.innerWidth <= 768) {
@@ -550,7 +550,7 @@
       });
       const activePcTab = pcCategories.querySelector(`.feed-item[data-tab="${state.currentTab}"]`);
       if (activePcTab) {
-        feedColumnTitle.textContent = activePcTab.querySelector('.feed-name')?.textContent || '最新资讯';
+        if (feedColumnTitle) feedColumnTitle.textContent = activePcTab.querySelector('.feed-name')?.textContent || '最新资讯';
       }
     }
 
@@ -593,7 +593,7 @@
       }
       
       const titleName = item.querySelector('.feed-name')?.textContent || '最新资讯';
-      feedColumnTitle.textContent = titleName;
+      if (feedColumnTitle) feedColumnTitle.textContent = titleName;
 
       if (window.innerWidth <= 768) {
         closeSidebar();
