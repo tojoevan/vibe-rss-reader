@@ -426,10 +426,68 @@
     mobileTabs.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
 
+    const pcCategories = document.getElementById('pc-categories');
+    if (pcCategories) {
+      pcCategories.querySelectorAll('.feed-item').forEach(li => {
+        li.classList.toggle('active', li.dataset.tab === state.currentTab);
+      });
+      const activePcTab = pcCategories.querySelector(`.feed-item[data-tab="${state.currentTab}"]`);
+      if (activePcTab) {
+        feedColumnTitle.textContent = activePcTab.querySelector('.feed-name')?.textContent || '最新资讯';
+      }
+    }
+
+    // Clear feed selection
+    const feedList = document.getElementById('feed-list');
+    if (feedList) {
+      feedList.querySelectorAll('.feed-item').forEach(li => li.classList.remove('active'));
+    }
+
     Store.invalidateArticles();
     loadArticles();
     updateMarkAllReadVisibility();
   });
+
+  // ============================================================
+  // PC TABS (Categories)
+  // ============================================================
+  const pcCategories = document.getElementById('pc-categories');
+  if (pcCategories) {
+    pcCategories.addEventListener('click', (e) => {
+      const item = e.target.closest('.feed-item');
+      if (!item) return;
+
+      state.currentTab = item.dataset.tab;
+      state.currentPage = 1;
+      
+      // Update UI for PC categories
+      pcCategories.querySelectorAll('.feed-item').forEach(li => li.classList.remove('active'));
+      item.classList.add('active');
+
+      // Update mobile tabs to match
+      mobileTabs.querySelectorAll('.tab-btn').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === state.currentTab);
+      });
+
+      // Clear feed selection
+      const feedList = document.getElementById('feed-list');
+      if (feedList) {
+        feedList.querySelectorAll('.feed-item').forEach(li => li.classList.remove('active'));
+      }
+      
+      const titleName = item.querySelector('.feed-name')?.textContent || '最新资讯';
+      feedColumnTitle.textContent = titleName;
+
+      if (window.innerWidth <= 768) {
+        closeSidebar();
+      }
+
+      Store.invalidateArticles();
+      loadArticles(true);
+      updateMarkAllReadVisibility();
+    });
+  }
+
 
   // ============================================================
   // SIDEBAR TOGGLE (Mobile)
@@ -444,13 +502,13 @@
 
   function openSidebar() {
     sidebar.classList.add('is-open');
-    // Create overlay
+    // Create overlay inside app-main so it shares stacking context with sidebar
     let overlay = document.querySelector('.sidebar-overlay');
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.className = 'sidebar-overlay';
       overlay.addEventListener('click', closeSidebar);
-      document.body.appendChild(overlay);
+      appMain.appendChild(overlay);
     }
     requestAnimationFrame(() => overlay.classList.add('is-visible'));
   }
