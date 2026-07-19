@@ -1012,8 +1012,9 @@ input { font: inherit; color: inherit; }
 }
 
 .toast {
+  position: relative;
   padding: var(--space-md) var(--space-lg);
-  background: var(--bg-primary);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
@@ -1023,9 +1024,15 @@ input { font: inherit; color: inherit; }
   max-width: 360px;
   overflow: hidden;
 }
-.toast.toast-success { box-shadow: inset 4px 0 0 var(--success), var(--shadow-lg); }
-.toast.toast-error { box-shadow: inset 4px 0 0 var(--danger), var(--shadow-lg); }
-.toast.toast-info { box-shadow: inset 4px 0 0 var(--info), var(--shadow-lg); }
+.toast::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 4px;
+}
+.toast.toast-success::before { background: var(--success); }
+.toast.toast-error::before { background: var(--danger); }
+.toast.toast-info::before { background: var(--info); }
 
 .toast.toast-out { animation: toastOut var(--transition-base) forwards; }
 
