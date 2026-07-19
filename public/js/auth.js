@@ -7,27 +7,20 @@ window.Auth = (() => {
 
   async function init() {
     try {
-      // Fetch public configuration from backend
-      const res = await fetch('/api/config');
-      const config = await res.json();
-      const publishableKey = config.clerkPublishableKey;
-
-      if (!publishableKey) {
-        console.error('Clerk Publishable Key is missing from environment variables.');
-        handleAuthChange({ user: null });
-        return;
-      }
-
-      // Dynamically load Clerk JS
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
-        script.crossOrigin = 'anonymous';
-        script.setAttribute('data-clerk-publishable-key', publishableKey);
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load Clerk script'));
-        document.head.appendChild(script);
-      });
+      // Wait for Clerk script to be ready
+      const checkClerk = () => {
+        return new Promise((resolve) => {
+          if (window.Clerk) {
+            resolve();
+          } else {
+            setTimeout(async () => {
+              await checkClerk();
+              resolve();
+            }, 50);
+          }
+        });
+      };
+      await checkClerk();
 
       clerkInstance = window.Clerk;
       await clerkInstance.load();
