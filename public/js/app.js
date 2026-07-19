@@ -567,16 +567,8 @@
 
   function showAdminButton(pendingSources) {
     let adminBtn = document.getElementById('btn-admin');
-    if (!adminBtn) {
-      adminBtn = document.createElement('button');
-      adminBtn.id = 'btn-admin';
-      adminBtn.className = 'btn btn-ghost';
-      adminBtn.textContent = `🔧 审核 (${pendingSources.length})`;
-      adminBtn.style.marginRight = 'var(--space-sm)';
-      $('user-area').insertBefore(adminBtn, $('user-area').firstChild);
-
-      adminBtn.addEventListener('click', () => openAdminPanel());
-    } else {
+    if (adminBtn) {
+      adminBtn.style.display = 'block';
       adminBtn.textContent = `🔧 审核 (${pendingSources.length})`;
     }
   }
@@ -679,6 +671,24 @@
   // ============================================================
   // LOGIN / LOGOUT BUTTONS
   // ============================================================
+  // USER DROPDOWN & MENU EVENTS
+  // ============================================================
+  $('btn-admin').addEventListener('click', () => {
+    openAdminPanel();
+    $('user-dropdown').style.display = 'none';
+  });
+
+  $('user-name').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const menu = $('user-dropdown');
+    menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+  });
+
+  document.addEventListener('click', () => {
+    const menu = $('user-dropdown');
+    if (menu) menu.style.display = 'none';
+  });
+
   $('btn-login').addEventListener('click', () => Auth.login());
   $('btn-logout').addEventListener('click', async () => {
     const confirmed = await confirm('确定要退出登录吗？');

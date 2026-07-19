@@ -1040,11 +1040,12 @@ input { font: inherit; color: inherit; }
   .reader-content { padding: var(--space-lg); }
   .reader-header h1 { font-size: var(--text-xl); }
 
-  /* Mobile article row: compact, always show actions */
+  /* Mobile article row: always show actions inline */
   .article-row-actions {
     opacity: 1;
-    flex-direction: column;
-    gap: 0;
+    flex-direction: row;
+    gap: 4px;
+    margin-left: auto; /* push to right if needed, or let it flow naturally */
   }
 
   .row-action-btn { width: 24px; height: 24px; }
