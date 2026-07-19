@@ -730,7 +730,13 @@
     try {
       const data = await API.getExploreData();
 
-      guestLatest.innerHTML = (data.latest || []).map(a => `
+      const sortedLatest = (data.latest || []).sort((a, b) => {
+        const da = new Date(a.published_at).getTime() || 0;
+        const db = new Date(b.published_at).getTime() || 0;
+        return db - da;
+      });
+
+      guestLatest.innerHTML = sortedLatest.map(a => `
         <a class="guest-card" href="${Feed.escapeHTML(a.link || '#')}" target="_blank" rel="noopener">
           <div class="guest-card-title">${Feed.escapeHTML(a.title || '无标题')}</div>
           <div class="guest-card-meta">

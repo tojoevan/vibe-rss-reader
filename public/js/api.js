@@ -55,7 +55,16 @@ window.API = (() => {
       } else {
         params.set('all', 'true');
       }
-      return request(`/api/feeds?${params}`);
+      return request(`/api/feeds?${params}`).then(res => {
+        if (res.articles) {
+          res.articles.sort((a, b) => {
+            const da = new Date(a.published_at).getTime() || 0;
+            const db = new Date(b.published_at).getTime() || 0;
+            return db - da;
+          });
+        }
+        return res;
+      });
     },
 
     // --- Articles ---

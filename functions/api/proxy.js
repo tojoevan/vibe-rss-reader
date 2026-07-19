@@ -138,6 +138,14 @@ async function parseAndStoreArticles(db, feedId, xml) {
 
   while ((match = itemRegex.exec(xml)) !== null) {
     const item = match[1];
+    
+    let rawDate = extractTag(item, 'pubDate') || extractTag(item, 'dc:date') || '';
+    let isoDate = rawDate;
+    if (rawDate) {
+      const d = new Date(rawDate);
+      if (!isNaN(d.valueOf())) isoDate = d.toISOString();
+    }
+
     articles.push({
       title: extractTag(item, 'title'),
       link: extractTag(item, 'link'),
@@ -145,7 +153,7 @@ async function parseAndStoreArticles(db, feedId, xml) {
       author: extractTag(item, 'dc:creator') || extractTag(item, 'author') || '',
       summary: extractTag(item, 'description') || '',
       content: extractTag(item, 'content:encoded') || extractTag(item, 'description') || '',
-      published_at: extractTag(item, 'pubDate') || extractTag(item, 'dc:date') || '',
+      published_at: isoDate,
     });
   }
 
@@ -155,6 +163,14 @@ async function parseAndStoreArticles(db, feedId, xml) {
     while ((match = entryRegex.exec(xml)) !== null) {
       const entry = match[1];
       const link = extractAtomLink(entry);
+      
+      let rawDate = extractTag(entry, 'published') || extractTag(entry, 'updated') || '';
+      let isoDate = rawDate;
+      if (rawDate) {
+        const d = new Date(rawDate);
+        if (!isNaN(d.valueOf())) isoDate = d.toISOString();
+      }
+
       articles.push({
         title: extractTag(entry, 'title'),
         link,
@@ -162,7 +178,7 @@ async function parseAndStoreArticles(db, feedId, xml) {
         author: extractAtomAuthor(entry),
         summary: extractTag(entry, 'summary') || '',
         content: extractTag(entry, 'content') || extractTag(entry, 'summary') || '',
-        published_at: extractTag(entry, 'published') || extractTag(entry, 'updated') || '',
+        published_at: isoDate,
       });
     }
   }
