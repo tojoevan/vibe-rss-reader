@@ -118,36 +118,20 @@ export async function onRequestPost(context) {
 
   try {
     const body = await request.json();
-    const { feedId } = body; // optional: mark all read for specific feed
+    const { articleIds } = body; 
 
-    let articlesQuery;
-    let params;
-
-    if (feedId) {
-      articlesQuery = `
-        SELECT a.id FROM articles a
-        JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
-        WHERE a.feed_id = ?
-      `;
-      params = [userId, feedId];
-    } else {
-      articlesQuery = `
-        SELECT a.id FROM articles a
-        JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
-      `;
-      params = [userId];
+    if (!Array.isArray(articleIds) || articleIds.length === 0) {
+      return new Response(JSON.stringify({ error: 'No article IDs provided' }), { status: 400, headers: corsHeaders() });
     }
-
-    const articles = await env.RSS_DB.prepare(articlesQuery).bind(...params).all();
 
     // Batch upsert all as read
     const batch = [];
-    for (const article of articles.results) {
+    for (const id of articleIds) {
       batch.push(
         env.RSS_DB.prepare(`
           INSERT INTO user_article_status (user_id, article_id, is_read) VALUES (?, ?, 1)
           ON CONFLICT(user_id, article_id) DO UPDATE SET is_read = 1, updated_at = datetime('now')
-        `).bind(userId, article.id)
+        `).bind(userId, id)
       );
     }
 

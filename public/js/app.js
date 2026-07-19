@@ -515,8 +515,10 @@
   // --- Mark All Read ---
   $('btn-mark-all-read').addEventListener('click', async () => {
     try {
-      await API.markAllRead(state.currentFeedId);
-      toast('已全部标记为已读', 'success');
+      if (!state.articles || state.articles.length === 0) return;
+      const articleIds = state.articles.map(a => a.id);
+      await API.markAllRead(articleIds);
+      toast('本页已全部标记为已读', 'success');
       Store.invalidateArticles();
       await loadArticles(true);
     } catch (err) {
