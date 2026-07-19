@@ -120,6 +120,9 @@
       <li class="feed-item ${state.currentFeedId === 'all' ? 'active' : ''}" data-feed="all" id="feed-all">
         <span class="feed-icon">📰</span>
         <span class="feed-name">全部文章</span>
+        <button class="feed-refresh" title="刷新文章" aria-label="刷新">
+          <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M14.5 9a5.5 5.5 0 11-1.6-3.9M14.5 3v2.1h-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </li>
     `;
 
@@ -136,6 +139,9 @@
       li.innerHTML = `
         <span class="feed-icon">${iconContent}</span>
         <span class="feed-name" title="${Feed.escapeHTML(sub.url)}">${Feed.escapeHTML(sub.title || sub.url)}</span>
+        <button class="feed-refresh" title="刷新" aria-label="刷新">
+          <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M14.5 9a5.5 5.5 0 11-1.6-3.9M14.5 3v2.1h-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="feed-remove" title="取消订阅" aria-label="取消订阅">
           <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
@@ -199,6 +205,41 @@
 
   // --- Feed List Click ---
   feedList.addEventListener('click', async (e) => {
+    const refreshBtn = e.target.closest('.feed-refresh');
+    if (refreshBtn) {
+      e.stopPropagation();
+      const li = refreshBtn.closest('.feed-item');
+      if (li) {
+        const feedId = li.dataset.feed;
+        refreshBtn.classList.add('is-spinning');
+        
+        // Trigger proxy refresh if it's a specific feed
+        if (feedId !== 'all') {
+          const sub = state.subscriptions.find(s => s.feed_id == feedId);
+          if (sub) {
+            try {
+              await API.proxyFeed(sub.url, sub.feed_id, true);
+            } catch (err) {
+              console.error('Refresh proxy failed:', err);
+            }
+          }
+        }
+        
+        // Ensure this feed is active if clicked refresh, or just refresh data?
+        // Let's just switch to it and refresh
+        if (state.currentFeedId !== feedId) {
+          state.currentFeedId = feedId;
+          updateActiveFeedItem();
+        }
+        
+        Store.invalidateArticles();
+        await loadArticles(true);
+        refreshBtn.classList.remove('is-spinning');
+        toast('已刷新', 'success');
+      }
+      return;
+    }
+
     const feedItem = e.target.closest('.feed-item');
     const removeBtn = e.target.closest('.feed-remove');
 
@@ -377,29 +418,6 @@
         Reader.showArticle(article);
       }
     }
-  });
-
-  // --- Refresh ---
-  $('btn-refresh').addEventListener('click', async () => {
-    const btn = $('btn-refresh');
-    btn.classList.add('is-spinning');
-
-    // If a specific feed is selected, trigger proxy refresh
-    if (state.currentFeedId !== 'all') {
-      const sub = state.subscriptions.find(s => s.feed_id == state.currentFeedId);
-      if (sub) {
-        try {
-          await API.proxyFeed(sub.url, sub.feed_id, true);
-        } catch (err) {
-          console.error('Refresh proxy failed:', err);
-        }
-      }
-    }
-
-    Store.invalidateArticles();
-    await loadArticles(true);
-    btn.classList.remove('is-spinning');
-    toast('已刷新', 'success');
   });
 
   // --- Mark All Read ---
