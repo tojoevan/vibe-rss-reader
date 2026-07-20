@@ -11,6 +11,7 @@
   --bg-tertiary: #dcdcdc;
   --bg-surface: #ffffff;
   --bg-hover: #eaeaea;
+  --card-hover-bg: #f7f9fc;
   --bg-active: #d5d5d5;
 
   --text-primary: #2d2d30;
@@ -89,6 +90,7 @@
   --bg-tertiary: #1a1a2e;
   --bg-surface: #16162a;
   --bg-hover: #1e1e38;
+  --card-hover-bg: #1e1e38;
   --bg-active: #262650;
 
   --text-primary: #a8a8c0;
@@ -882,7 +884,7 @@ input { font: inherit; color: inherit; }
   cursor: pointer;
 }
 .guest-card:hover {
-  background: var(--bg-hover);
+  background: var(--card-hover-bg);
   border-color: var(--border-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
