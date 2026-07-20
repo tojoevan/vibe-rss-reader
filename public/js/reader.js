@@ -52,14 +52,7 @@ window.Reader = (() => {
     // Cache the article
     Store.setArticle(article.id, article);
 
-    // Auto-mark as read
-    if (!article.is_read && Auth.isLoggedIn()) {
-      API.updateArticleStatus(article.id, 'read').catch(() => {});
-      article.is_read = 1;
-      // Update list row
-      const row = document.querySelector(`.article-row[data-id="${article.id}"]`);
-      if (row) row.classList.add('is-read');
-    }
+    // Auto-mark as read logic has been removed as requested.
   }
 
   function closeReader() {

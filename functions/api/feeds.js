@@ -40,13 +40,13 @@ export async function onRequestGet(context) {
       // Get read articles
       query = `
         SELECT a.*, fs.title as source_title, fs.favicon_url,
-               uas.is_read, uas.is_favorited, uas.is_read_later
+               uas.is_read, uas.is_favorited, uas.is_read_later, uas.updated_at as action_time
         FROM articles a
         JOIN feed_sources fs ON a.feed_id = fs.id
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_read = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY a.published_at DESC
+        ORDER BY uas.updated_at DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -62,13 +62,13 @@ export async function onRequestGet(context) {
     } else if (tab === 'later') {
       query = `
         SELECT a.*, fs.title as source_title, fs.favicon_url,
-               uas.is_read, uas.is_favorited, uas.is_read_later
+               uas.is_read, uas.is_favorited, uas.is_read_later, uas.updated_at as action_time
         FROM articles a
         JOIN feed_sources fs ON a.feed_id = fs.id
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_read_later = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY a.published_at DESC
+        ORDER BY uas.updated_at DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -84,13 +84,13 @@ export async function onRequestGet(context) {
     } else if (tab === 'favorites') {
       query = `
         SELECT a.*, fs.title as source_title, fs.favicon_url,
-               uas.is_read, uas.is_favorited, uas.is_read_later
+               uas.is_read, uas.is_favorited, uas.is_read_later, uas.updated_at as action_time
         FROM articles a
         JOIN feed_sources fs ON a.feed_id = fs.id
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_favorited = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY a.published_at DESC
+        ORDER BY uas.updated_at DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -120,7 +120,7 @@ export async function onRequestGet(context) {
               SELECT 1 FROM user_article_status 
               WHERE user_id = ? AND article_id = a.id AND is_read = 1
             )
-          ORDER BY a.published_at DESC
+          ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
           LIMIT ? OFFSET ?
         `;
         params = [userId, userId, feedId, userId, pageSize, offset];
@@ -150,7 +150,7 @@ export async function onRequestGet(context) {
             SELECT 1 FROM user_article_status 
             WHERE user_id = ? AND article_id = a.id AND is_read = 1
           )
-          ORDER BY a.published_at DESC
+          ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
           LIMIT ? OFFSET ?
         `;
         params = [userId, userId, userId, pageSize, offset];

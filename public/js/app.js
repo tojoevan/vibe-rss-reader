@@ -512,10 +512,16 @@
       let article = Store.getArticle(articleId);
       if (!article) {
         // Find in current list data
-        const cacheKey = `${state.currentFeedId}|${state.currentTab}|${state.currentPage}`;
-        const cached = Store.getArticles(cacheKey);
-        if (cached) {
-          article = cached.articles.find(a => a.id === articleId);
+        if (state.articles) {
+          article = state.articles.find(a => a.id === articleId);
+        }
+        
+        if (!article) {
+          const cacheKey = `${state.currentFeedId}|${state.currentTab}|${state.currentPage}`;
+          const cached = Store.getArticles(cacheKey);
+          if (cached) {
+            article = cached.articles.find(a => a.id === articleId);
+          }
         }
       }
 
@@ -1122,6 +1128,76 @@
       readerPane.classList.remove('is-open');
     } else if (Auth.isLoggedIn()) {
       mobileTabs.style.display = 'flex';
+    }
+  });
+
+  // ============================================================
+  // KEYBOARD SHORTCUTS
+  // ============================================================
+  document.addEventListener('keydown', async (e) => {
+    // Ignore if typing in an input/textarea
+    const activeElement = document.activeElement;
+    if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable)) {
+      return;
+    }
+
+    if (!Auth.isLoggedIn()) return;
+
+    // Only operate if there are articles and an active row
+    const activeRow = articleList.querySelector('.article-row.active');
+    if (!activeRow) return;
+
+    const articleId = parseInt(activeRow.dataset.id);
+    const article = state.articles ? state.articles.find(a => a.id === articleId) : Store.getArticle(articleId);
+    if (!article) return;
+
+    if (e.key === ' ') {
+      // Space: toggle read
+      e.preventDefault();
+      try {
+        const result = await API.updateArticleStatus(articleId, 'read');
+        Store.invalidateArticles();
+        
+        // Update UI list row
+        activeRow.classList.toggle('is-read', !!result.is_read);
+        const readBtn = activeRow.querySelector('[data-action="read"]');
+        if (readBtn) readBtn.classList.toggle('is-active', !!result.is_read);
+        
+        // Update reader pane action button
+        const actionRead = document.getElementById('action-read');
+        if (actionRead) actionRead.classList.toggle('is-active', !!result.is_read);
+        
+        // Auto-hide row if necessary (e.g. latest tab)
+        if ((state.currentTab === 'latest' && !!result.is_read) ||
+            (state.currentTab === 'read' && !result.is_read)) {
+          activeRow.classList.add('is-hiding');
+          setTimeout(() => activeRow.remove(), 300);
+        }
+      } catch (err) {
+        toast(err.message, 'error');
+      }
+    } else if (e.key === 'j') {
+      // Next article
+      e.preventDefault();
+      const nextRow = activeRow.nextElementSibling;
+      if (nextRow && nextRow.classList.contains('article-row')) {
+        nextRow.click();
+        nextRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } else if (e.key === 'k') {
+      // Previous article
+      e.preventDefault();
+      const prevRow = activeRow.previousElementSibling;
+      if (prevRow && prevRow.classList.contains('article-row')) {
+        prevRow.click();
+        prevRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } else if (e.key === 'o') {
+      // Open original link in new tab
+      e.preventDefault();
+      if (article.link) {
+        window.open(article.link, '_blank', 'noopener,noreferrer');
+      }
     }
   });
 

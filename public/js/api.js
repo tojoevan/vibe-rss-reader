@@ -56,13 +56,7 @@ window.API = (() => {
         params.set('all', 'true');
       }
       return request(`/api/feeds?${params}`).then(res => {
-        if (res.articles) {
-          res.articles.sort((a, b) => {
-            const da = new Date(a.published_at).getTime() || 0;
-            const db = new Date(b.published_at).getTime() || 0;
-            return db - da;
-          });
-        }
+        // We rely on the backend to provide correctly sorted and paginated articles.
         return res;
       });
     },
