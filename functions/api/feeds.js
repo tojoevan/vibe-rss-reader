@@ -46,7 +46,7 @@ export async function onRequestGet(context) {
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_read = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY uas.updated_at DESC
+        ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -68,7 +68,7 @@ export async function onRequestGet(context) {
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_read_later = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY uas.updated_at DESC
+        ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -90,7 +90,7 @@ export async function onRequestGet(context) {
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_favorited = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY uas.updated_at DESC
+        ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
