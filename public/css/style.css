@@ -1255,3 +1255,16 @@ input { font: inherit; color: inherit; }
 .dropdown-item.text-danger {
   color: var(--danger);
 }
+
+/* 深色模式下的“标记本页已读”按钮调暗 */
+[data-theme="dark"] #btn-mark-all-read {
+  background: rgba(249, 115, 22, 0.2);
+  color: #9898b8;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  box-shadow: none;
+}
+
+[data-theme="dark"] #btn-mark-all-read:hover {
+  background: rgba(249, 115, 22, 0.3);
+  color: #c0c0d0; 
+}
