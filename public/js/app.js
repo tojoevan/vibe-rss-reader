@@ -1198,7 +1198,7 @@
         targetRow.click();
         targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
-    } else if (e.key === 'j') {
+    } else if (e.key === 'j' || e.key === 'ArrowDown') {
       // Next article
       e.preventDefault();
       const nextRow = activeRow.nextElementSibling;
@@ -1206,7 +1206,7 @@
         nextRow.click();
         nextRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
-    } else if (e.key === 'k') {
+    } else if (e.key === 'k' || e.key === 'ArrowUp') {
       // Previous article
       e.preventDefault();
       const prevRow = activeRow.previousElementSibling;
