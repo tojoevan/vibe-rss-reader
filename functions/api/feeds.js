@@ -46,7 +46,7 @@ export async function onRequestGet(context) {
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_read = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
+        ORDER BY COALESCE(datetime(a.published_at), a.created_at) DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -68,7 +68,7 @@ export async function onRequestGet(context) {
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_read_later = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
+        ORDER BY COALESCE(datetime(a.published_at), a.created_at) DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -90,7 +90,7 @@ export async function onRequestGet(context) {
         JOIN user_subscriptions us ON a.feed_id = us.feed_id AND us.user_id = ?
         JOIN user_article_status uas ON a.id = uas.article_id AND uas.user_id = ? AND uas.is_favorited = 1
         ${feedId ? 'AND a.feed_id = ?' : ''}
-        ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
+        ORDER BY COALESCE(datetime(a.published_at), a.created_at) DESC
         LIMIT ? OFFSET ?
       `;
       params = feedId ? [userId, userId, feedId, pageSize, offset] : [userId, userId, pageSize, offset];
@@ -120,7 +120,7 @@ export async function onRequestGet(context) {
               SELECT 1 FROM user_article_status 
               WHERE user_id = ? AND article_id = a.id AND is_read = 1
             )
-          ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
+          ORDER BY COALESCE(datetime(a.published_at), a.created_at) DESC
           LIMIT ? OFFSET ?
         `;
         params = [userId, userId, feedId, userId, pageSize, offset];
@@ -150,7 +150,7 @@ export async function onRequestGet(context) {
             SELECT 1 FROM user_article_status 
             WHERE user_id = ? AND article_id = a.id AND is_read = 1
           )
-          ORDER BY CASE WHEN a.published_at IS NULL OR a.published_at = '' THEN a.created_at ELSE a.published_at END DESC
+          ORDER BY COALESCE(datetime(a.published_at), a.created_at) DESC
           LIMIT ? OFFSET ?
         `;
         params = [userId, userId, userId, pageSize, offset];
