@@ -1173,6 +1173,16 @@
           activeRow.classList.add('is-hiding');
           setTimeout(() => activeRow.remove(), 300);
         }
+
+        // Auto-select next or previous item
+        let targetRow = activeRow.nextElementSibling;
+        if (!targetRow || !targetRow.classList.contains('article-row')) {
+          targetRow = activeRow.previousElementSibling;
+        }
+        if (targetRow && targetRow.classList.contains('article-row')) {
+          targetRow.click();
+          targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       } catch (err) {
         toast(err.message, 'error');
       }
