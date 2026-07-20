@@ -1152,39 +1152,45 @@
     if (!article) return;
 
     if (e.key === ' ') {
-      // Space: toggle read
+      // Space: mark as read and advance
       e.preventDefault();
-      try {
-        const result = await API.updateArticleStatus(articleId, 'read');
-        Store.invalidateArticles();
-        
-        // Update UI list row
-        activeRow.classList.toggle('is-read', !!result.is_read);
-        const readBtn = activeRow.querySelector('[data-action="read"]');
-        if (readBtn) readBtn.classList.toggle('is-active', !!result.is_read);
-        
-        // Update reader pane action button
-        const actionRead = document.getElementById('action-read');
-        if (actionRead) actionRead.classList.toggle('is-active', !!result.is_read);
-        
-        // Auto-hide row if necessary (e.g. latest tab)
-        if ((state.currentTab === 'latest' && !!result.is_read) ||
-            (state.currentTab === 'read' && !result.is_read)) {
-          activeRow.classList.add('is-hiding');
-          setTimeout(() => activeRow.remove(), 300);
-        }
 
-        // Auto-select next or previous item
-        let targetRow = activeRow.nextElementSibling;
-        if (!targetRow || !targetRow.classList.contains('article-row')) {
-          targetRow = activeRow.previousElementSibling;
+      // Find target row to advance to
+      let targetRow = activeRow.nextElementSibling;
+      if (!targetRow || !targetRow.classList.contains('article-row')) {
+        targetRow = activeRow.previousElementSibling;
+      }
+
+      // Only mark as read if it isn't already read
+      if (!article.is_read) {
+        try {
+          const result = await API.updateArticleStatus(articleId, 'read');
+          Store.invalidateArticles();
+          article.is_read = result.is_read;
+          
+          // Update UI list row
+          activeRow.classList.add('is-read');
+          const readBtn = activeRow.querySelector('[data-action="read"]');
+          if (readBtn) readBtn.classList.add('is-active');
+          
+          // Update reader pane action button
+          const actionRead = document.getElementById('action-read');
+          if (actionRead) actionRead.classList.add('is-active');
+          
+          // Auto-hide row if in latest tab
+          if (state.currentTab === 'latest' && !!result.is_read) {
+            activeRow.classList.add('is-hiding');
+            setTimeout(() => activeRow.remove(), 300);
+          }
+        } catch (err) {
+          toast(err.message, 'error');
         }
-        if (targetRow && targetRow.classList.contains('article-row')) {
-          targetRow.click();
-          targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      } catch (err) {
-        toast(err.message, 'error');
+      }
+
+      // Advance
+      if (targetRow && targetRow.classList.contains('article-row')) {
+        targetRow.click();
+        targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     } else if (e.key === 'j') {
       // Next article
