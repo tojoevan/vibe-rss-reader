@@ -1152,7 +1152,7 @@
     if (!article) return;
 
     if (e.key === ' ') {
-      // Space: mark as read and advance
+      // Space: mark read/unread based on tab context and advance
       e.preventDefault();
 
       // Find target row to advance to
@@ -1161,27 +1161,33 @@
         targetRow = activeRow.previousElementSibling;
       }
 
-      // Only mark as read if it isn't already read
-      if (!article.is_read) {
+      // Determine action based on current tab
+      let shouldToggle = false;
+      if (state.currentTab === 'latest' && !article.is_read) {
+        shouldToggle = true; // Latest tab: mark as read
+      } else if (state.currentTab === 'read' && article.is_read) {
+        shouldToggle = true; // Read tab: mark as unread
+      }
+
+      if (shouldToggle) {
         try {
           const result = await API.updateArticleStatus(articleId, 'read');
           Store.invalidateArticles();
           article.is_read = result.is_read;
           
           // Update UI list row
-          activeRow.classList.add('is-read');
+          activeRow.classList.toggle('is-read', !!result.is_read);
           const readBtn = activeRow.querySelector('[data-action="read"]');
-          if (readBtn) readBtn.classList.add('is-active');
+          if (readBtn) readBtn.classList.toggle('is-active', !!result.is_read);
           
           // Update reader pane action button
           const actionRead = document.getElementById('action-read');
-          if (actionRead) actionRead.classList.add('is-active');
+          if (actionRead) actionRead.classList.toggle('is-active', !!result.is_read);
           
-          // Auto-hide row if in latest tab
-          if (state.currentTab === 'latest' && !!result.is_read) {
-            activeRow.classList.add('is-hiding');
-            setTimeout(() => activeRow.remove(), 300);
-          }
+          // Auto-hide row since its status changed out of the current tab's scope
+          activeRow.classList.add('is-hiding');
+          setTimeout(() => activeRow.remove(), 300);
+          
         } catch (err) {
           toast(err.message, 'error');
         }
