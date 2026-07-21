@@ -920,11 +920,25 @@ input { font: inherit; color: inherit; }
 }
 
 .pulse-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #f97316;
-  box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+  background-color: #f97316 !important;
+  box-shadow: 0 0 10px #f97316;
+  display: inline-block;
+  vertical-align: middle;
+  animation: pulseDotGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseDotGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 6px #f97316, 0 0 10px rgba(249, 115, 22, 0.4);
+  }
+  50% {
+    transform: scale(1.3);
+    box-shadow: 0 0 14px #f97316, 0 0 20px rgba(249, 115, 22, 0.7);
+  }
 }
 
 .guest-hero-title {

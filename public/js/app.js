@@ -7,11 +7,11 @@
 
   function getDynamicPageSize() {
     if (window.innerWidth <= 768) {
-      // Header (52px) + Tab bar (40px) + Title/Actions (~50px) + Pagination (~50px) = ~192px
-      const availableHeight = window.innerHeight - 192;
-      const rowHeight = 72;
-      const count = Math.floor(availableHeight / rowHeight) - 1;
-      return Math.max(4, Math.min(10, count));
+      // Header (56px) + Tab bar (40px) + Pagination/Footer (~70px) = ~166px
+      const availableHeight = window.innerHeight - 166;
+      const rowHeight = 70;
+      const count = Math.floor(availableHeight / rowHeight);
+      return Math.max(4, Math.min(12, count));
     }
     return 15;
   }
