@@ -1095,20 +1095,21 @@ input { font: inherit; color: inherit; }
 
   .sidebar {
     position: fixed;
-    top: calc(var(--header-height) + var(--mobile-tab-height));
+    top: var(--header-height);
     left: 0; bottom: 0;
     width: 280px;
-    z-index: 80;
+    z-index: 96;
     transform: translateX(-100%);
-    box-shadow: none; /* Removed --shadow-lg as per user request */
+    box-shadow: var(--shadow-lg);
   }
   .sidebar.is-open { transform: translateX(0); }
 
   .sidebar-overlay {
     position: fixed;
-    inset: 0;
+    top: var(--header-height);
+    left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.5);
-    z-index: 79;
+    z-index: 95;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base);
