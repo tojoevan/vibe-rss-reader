@@ -206,10 +206,16 @@
   </dialog>
 
   <!-- ===== Confirm Dialog ===== -->
-  <dialog class="modal modal-sm" id="confirm-dialog">
-    <div class="modal-content">
-      <p id="confirm-message">确定要执行此操作吗？</p>
-      <div class="modal-actions">
+  <dialog class="modal modal-sm confirm-modal" id="confirm-dialog">
+    <div class="modal-content confirm-modal-content">
+      <div class="confirm-modal-header">
+        <div class="confirm-icon-wrapper" id="confirm-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="confirm-modal-title" id="confirm-title">提示</h3>
+      </div>
+      <p class="confirm-modal-message" id="confirm-message">确定要执行此操作吗？</p>
+      <div class="modal-actions confirm-modal-actions">
         <button class="btn btn-ghost" id="confirm-cancel">取消</button>
         <button class="btn btn-danger" id="confirm-ok">确定</button>
       </div>
