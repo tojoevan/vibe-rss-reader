@@ -159,7 +159,9 @@
     // Keep the "all" item
     feedList.innerHTML = `
       <div class="feed-item ${state.currentFeedId === 'all' ? 'active' : ''}" data-feed="all" id="feed-all">
-        <span class="feed-icon">📰</span>
+        <span class="feed-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
         <span class="feed-name">全部文章</span>
         <button class="feed-refresh" title="刷新文章" aria-label="刷新">
           <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M14.5 9a5.5 5.5 0 11-1.6-3.9M14.5 3v2.1h-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -461,7 +463,7 @@
       console.error('Load articles failed:', err);
       articleList.innerHTML = `
         <div class="empty-state">
-          <p>⚠️ 加载失败</p>
+          <p>加载失败</p>
           <p class="text-muted">${Feed.escapeHTML(err.message)}</p>
         </div>
       `;
@@ -893,7 +895,8 @@
     let adminBtn = document.getElementById('btn-admin');
     if (adminBtn) {
       adminBtn.style.display = 'block';
-      adminBtn.textContent = `🔧 审核 (${pendingSources.length})`;
+      const countEl = document.getElementById('admin-count');
+      if (countEl) countEl.textContent = pendingSources.length;
     }
   }
 
@@ -918,8 +921,8 @@
             <div class="text-muted" style="font-size:var(--text-xs);margin-top:2px">提交者: ${Feed.escapeHTML(source.submitted_by || '未知')}</div>
           </div>
           <div class="admin-item-actions">
-            <button class="btn btn-primary btn-sm admin-action-btn" data-feed-id="${source.id}" data-action="approve">✓ 通过</button>
-            <button class="btn btn-danger btn-sm admin-action-btn" data-feed-id="${source.id}" data-action="reject">✗ 拒绝</button>
+            <button class="btn btn-primary btn-sm admin-action-btn" data-feed-id="${source.id}" data-action="approve">通过</button>
+            <button class="btn btn-danger btn-sm admin-action-btn" data-feed-id="${source.id}" data-action="reject">拒绝</button>
           </div>
         </div>
       `).join('');
@@ -949,7 +952,7 @@
     } catch (err) {
       toast(err.message, 'error');
       actionBtn.disabled = false;
-      actionBtn.textContent = action === 'approve' ? '✓ 通过' : '✗ 拒绝';
+      actionBtn.textContent = action === 'approve' ? '通过' : '拒绝';
     }
   });
 
@@ -1146,6 +1149,7 @@
   });
 
   $('btn-login').addEventListener('click', () => Auth.login());
+  if ($('guest-login-btn')) $('guest-login-btn').addEventListener('click', () => Auth.login());
   $('btn-logout').addEventListener('click', async () => {
     const confirmed = await confirm('确定要退出当前账号登录吗？', {
       title: '退出登录',

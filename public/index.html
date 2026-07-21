@@ -40,7 +40,7 @@
         </button>
         <div class="dropdown-menu" id="user-dropdown" style="display:none;">
           <button class="dropdown-item" id="btn-admin" style="display:none;">
-            <span>🔧</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
             <span>审核 (<span id="admin-count">0</span>)</span>
           </button>
           <div style="height: 1px; background: var(--border); margin: 4px 0;"></div>
@@ -87,7 +87,9 @@
       <!-- Subscription list -->
       <div class="feed-list" id="feed-list" style="margin-top: var(--space-sm);">
         <div class="feed-item active" data-feed="all" id="feed-all">
-          <span class="feed-icon">📰</span>
+          <span class="feed-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
           <span class="feed-name">全部文章</span>
           <button class="feed-refresh" title="刷新文章" aria-label="刷新">
             <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M14.5 9a5.5 5.5 0 11-1.6-3.9M14.5 3v2.1h-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -126,14 +128,16 @@
       </div>
       <!-- Mark all read -->
       <div class="mark-all-read" id="mark-all-read" style="display:none">
-        <button class="btn btn-primary btn-block" id="btn-mark-all-read">✓ 标记本页已读并刷新</button>
+        <button class="btn btn-primary btn-block" id="btn-mark-all-read">标记本页已读并刷新</button>
       </div>
     </section>
 
     <!-- Reader: Article content -->
     <section class="reader-pane" id="reader-pane">
       <div class="reader-empty" id="reader-empty">
-        <div class="reader-empty-icon">📖</div>
+        <div class="reader-empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <p>选择一篇文章开始阅读</p>
       </div>
       <article class="reader-content" id="reader-content" style="display:none">
@@ -166,15 +170,65 @@
 
   <!-- ===== Guest Landing (shown when not logged in) ===== -->
   <div class="guest-landing" id="guest-landing" style="display:none">
-    <div class="guest-columns">
-      <section class="guest-col">
-        <h2>最新资讯</h2>
-        <div class="guest-list" id="guest-latest"></div>
-      </section>
-      <section class="guest-col">
-        <h2>精选收藏</h2>
-        <div class="guest-list" id="guest-favorites"></div>
-      </section>
+    <div class="guest-container">
+      <!-- Hero Header -->
+      <header class="guest-hero">
+        <div class="guest-badge">
+          <span class="pulse-dot"></span>
+          <span>Vibe RSS Reader</span>
+        </div>
+        <h1 class="guest-hero-title">聚合资讯 · 回归纯粹阅读</h1>
+        <p class="guest-hero-subtitle">极简高效的个人 RSS 订阅与内容沉淀平台，无广告干扰，专注阅读体验。</p>
+        <div class="guest-hero-actions">
+          <button class="btn btn-primary btn-lg" id="guest-login-btn">
+            <span>立即登录使用</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Feature Grid -->
+      <div class="guest-features">
+        <div class="guest-feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>实时聚合</h3>
+          <p>多订阅源统一管理与抓取，智能过滤与快速流式更新。</p>
+        </div>
+        <div class="guest-feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>纯粹沉浸</h3>
+          <p>去除冗余视觉干扰，自适应优雅排版，支持深色与浅色模式。</p>
+        </div>
+        <div class="guest-feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>收藏与稍后读</h3>
+          <p>云端同步沉淀价值内容，支持稍后阅读列表与永久收藏。</p>
+        </div>
+      </div>
+
+      <!-- Exploration Columns -->
+      <div class="guest-columns">
+        <section class="guest-col">
+          <div class="guest-col-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h2>最新动态</h2>
+          </div>
+          <div class="guest-list" id="guest-latest"></div>
+        </section>
+        <section class="guest-col">
+          <div class="guest-col-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h2>精选收藏</h2>
+          </div>
+          <div class="guest-list" id="guest-favorites"></div>
+        </section>
+      </div>
     </div>
   </div>
 
@@ -196,7 +250,7 @@
   <dialog class="modal" id="admin-modal">
     <div class="modal-content modal-lg">
       <div class="modal-header">
-        <h2>🔧 管理员审核</h2>
+        <h2>管理员审核</h2>
         <button class="icon-btn modal-close" id="admin-modal-close" aria-label="关闭">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
