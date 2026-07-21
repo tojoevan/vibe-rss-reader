@@ -81,7 +81,81 @@ window.Reader = (() => {
   }
 
   /**
-   * Basic HTML sanitization — remove dangerous tags/attrs
+   * Automatically convert plain text URLs in text nodes into <a> href links opening in new tab
+   */
+  function autoLinkTextNodes(container) {
+    const urlRegex = /(https?:\/\/[^\s<>"'\(\)]+)/g;
+
+    const walk = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        let parent = node.parentElement;
+        while (parent && parent !== container) {
+          const tag = parent.tagName;
+          if (tag === 'A' || tag === 'SCRIPT' || tag === 'STYLE' || tag === 'PRE' || tag === 'CODE') {
+            return NodeFilter.FILTER_REJECT;
+          }
+          parent = parent.parentElement;
+        }
+        return urlRegex.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+      }
+    });
+
+    const nodesToProcess = [];
+    while (walk.nextNode()) {
+      nodesToProcess.push(walk.currentNode);
+    }
+
+    nodesToProcess.forEach(textNode => {
+      const parent = textNode.parentNode;
+      if (!parent) return;
+
+      const text = textNode.nodeValue;
+      const span = document.createElement('span');
+      
+      urlRegex.lastIndex = 0;
+      let lastIdx = 0;
+      let match;
+
+      while ((match = urlRegex.exec(text)) !== null) {
+        const url = match[0];
+        const matchIdx = match.index;
+
+        if (matchIdx > lastIdx) {
+          span.appendChild(document.createTextNode(text.substring(lastIdx, matchIdx)));
+        }
+
+        let cleanUrl = url;
+        let trailingPunct = '';
+        const matchPunct = url.match(/[.,;:?!]+$/);
+        if (matchPunct) {
+          trailingPunct = matchPunct[0];
+          cleanUrl = url.substring(0, url.length - trailingPunct.length);
+        }
+
+        const a = document.createElement('a');
+        a.href = cleanUrl;
+        a.textContent = cleanUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        span.appendChild(a);
+
+        if (trailingPunct) {
+          span.appendChild(document.createTextNode(trailingPunct));
+        }
+
+        lastIdx = matchIdx + url.length;
+      }
+
+      if (lastIdx < text.length) {
+        span.appendChild(document.createTextNode(text.substring(lastIdx)));
+      }
+
+      parent.replaceChild(span, textNode);
+    });
+  }
+
+  /**
+   * Basic HTML sanitization — remove dangerous tags/attrs and linkify URLs
    */
   function sanitizeHTML(html) {
     if (!html) return '<p class="text-muted">暂无内容</p>';
@@ -95,7 +169,7 @@ window.Reader = (() => {
       tmp.querySelectorAll(tag).forEach(el => el.remove());
     });
 
-    // Remove event handlers
+    // Remove event handlers & configure existing <a> tags
     tmp.querySelectorAll('*').forEach(el => {
       Array.from(el.attributes).forEach(attr => {
         if (attr.name.startsWith('on') || attr.name === 'srcdoc') {
@@ -108,6 +182,9 @@ window.Reader = (() => {
         el.setAttribute('rel', 'noopener noreferrer');
       }
     });
+
+    // Auto-convert plain text URLs into <a> href links
+    autoLinkTextNodes(tmp);
 
     return tmp.innerHTML;
   }
