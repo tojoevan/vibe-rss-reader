@@ -1090,6 +1090,7 @@
   async function loadGuestContent() {
     const guestLatest = $('guest-latest');
     const guestFavorites = $('guest-favorites');
+    if (!guestLatest || !guestFavorites) return;
 
     try {
       const data = await API.getExploreData();
@@ -1122,8 +1123,6 @@
 
     } catch (err) {
       console.error('Guest content load failed:', err);
-      guestLatest.innerHTML = '<p class="text-muted">加载失败，请稍后刷新</p>';
-      guestFavorites.innerHTML = '<p class="text-muted">加载失败</p>';
     }
   }
 
@@ -1150,6 +1149,7 @@
 
   $('btn-login').addEventListener('click', () => Auth.login());
   if ($('guest-login-btn')) $('guest-login-btn').addEventListener('click', () => Auth.login());
+  if ($('guest-bottom-login-btn')) $('guest-bottom-login-btn').addEventListener('click', () => Auth.login());
   $('btn-logout').addEventListener('click', async () => {
     const confirmed = await confirm('确定要退出当前账号登录吗？', {
       title: '退出登录',

@@ -171,21 +171,64 @@
   <!-- ===== Guest Landing (shown when not logged in) ===== -->
   <div class="guest-landing" id="guest-landing" style="display:none">
     <div class="guest-container">
-      <!-- Hero Header -->
+      <!-- Hero Section -->
       <header class="guest-hero">
         <div class="guest-badge">
           <span class="pulse-dot"></span>
           <span>Vibe RSS Reader</span>
         </div>
-        <h1 class="guest-hero-title">聚合资讯 · 回归纯粹阅读</h1>
-        <p class="guest-hero-subtitle">极简高效的个人 RSS 订阅与内容沉淀平台，无广告干扰，专注阅读体验。</p>
+        <h1 class="guest-hero-title">高效聚合 · 沉浸阅读</h1>
+        <p class="guest-hero-subtitle">重新定义全平台 RSS 阅读体验，摒弃信息杂音，回归内容本质。</p>
         <div class="guest-hero-actions">
           <button class="btn btn-primary btn-lg" id="guest-login-btn">
-            <span>立即登录使用</span>
+            <span>开始免费体验</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </header>
+
+      <!-- App Interface Mockup Showcase -->
+      <div class="guest-mockup-wrapper">
+        <div class="guest-mockup">
+          <div class="mockup-header">
+            <div class="mockup-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="mockup-title">Vibe RSS Reader Workspace</div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-sidebar">
+              <div class="mockup-item active"><span class="mockup-icon"></span>全部文章</div>
+              <div class="mockup-item"><span class="mockup-icon"></span>科技资讯</div>
+              <div class="mockup-item"><span class="mockup-icon"></span>前沿设计</div>
+              <div class="mockup-item"><span class="mockup-icon"></span>独立博客</div>
+            </div>
+            <div class="mockup-feed">
+              <div class="mockup-article active">
+                <div class="mockup-article-title">构建极简而强大的 Web 应用程序体验</div>
+                <div class="mockup-article-sub">Tech Weekly · 10分钟前</div>
+              </div>
+              <div class="mockup-article">
+                <div class="mockup-article-title">深度解析现代前端设计系统与无痕交互</div>
+                <div class="mockup-article-sub">Design Review · 2小时前</div>
+              </div>
+              <div class="mockup-article">
+                <div class="mockup-article-title">为什么越来越多的人开始重回 RSS 阅读？</div>
+                <div class="mockup-article-sub">Mindset Blog · 5小时前</div>
+              </div>
+            </div>
+            <div class="mockup-reader">
+              <div class="mockup-reader-title">构建极简而强大的 Web 应用程序体验</div>
+              <div class="mockup-reader-meta">作者: Alexander · 2026-07-22</div>
+              <div class="mockup-reader-text">
+                阅读不仅是获取信息的手段，更是思考与沉淀的过程。在信息爆炸的时代，通过 RSS 独立订阅源，你可以自由挑选真正有价值的媒体与作者，享受无广告打扰的纯净排版...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Feature Grid -->
       <div class="guest-features">
@@ -193,41 +236,40 @@
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <h3>实时聚合</h3>
-          <p>多订阅源统一管理与抓取，智能过滤与快速流式更新。</p>
+          <h3>智能聚合</h3>
+          <p>自定义全网 RSS/Atom 订阅源，自动流式抓取与去重更新。</p>
         </div>
         <div class="guest-feature-card">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <h3>纯粹沉浸</h3>
-          <p>去除冗余视觉干扰，自适应优雅排版，支持深色与浅色模式。</p>
+          <h3>极致排版</h3>
+          <p>去除网页广告与冗余干扰，自适应多端设备与深色模式。</p>
         </div>
         <div class="guest-feature-card">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <h3>收藏与稍后读</h3>
-          <p>云端同步沉淀价值内容，支持稍后阅读列表与永久收藏。</p>
+          <h3>稍后读与珍藏</h3>
+          <p>一键收藏价值资讯，建立专属于你的个人知识存储库。</p>
+        </div>
+        <div class="guest-feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>纯净专注</h3>
+          <p>无广告算法打扰，无隐性数据跟踪，完全由你掌控信息流。</p>
         </div>
       </div>
 
-      <!-- Exploration Columns -->
-      <div class="guest-columns">
-        <section class="guest-col">
-          <div class="guest-col-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h2>最新动态</h2>
-          </div>
-          <div class="guest-list" id="guest-latest"></div>
-        </section>
-        <section class="guest-col">
-          <div class="guest-col-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h2>精选收藏</h2>
-          </div>
-          <div class="guest-list" id="guest-favorites"></div>
-        </section>
+      <!-- Bottom CTA Banner -->
+      <div class="guest-cta-banner">
+        <h2>准备好开启纯粹的阅读之旅了吗？</h2>
+        <p>无需繁琐步骤，立即登录打造专属你的信息阅读空间。</p>
+        <button class="btn btn-primary btn-lg" id="guest-bottom-login-btn">
+          <span>立即登录</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
   </div>
