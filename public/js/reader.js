@@ -36,12 +36,22 @@ window.Reader = (() => {
     // Mobile: open reader pane
     if (window.innerWidth <= 768) {
       readerPane.classList.add('is-open');
+      
+      // push state so browser back button works
+      history.pushState({ readerOpen: true }, '');
+
       // Add back button if not present
       if (!readerContent.querySelector('.reader-back-btn')) {
         const backBtn = document.createElement('button');
         backBtn.className = 'reader-back-btn';
         backBtn.innerHTML = '← 返回列表';
-        backBtn.addEventListener('click', closeReader);
+        backBtn.addEventListener('click', () => {
+          if (history.state && history.state.readerOpen) {
+            history.back();
+          } else {
+            closeReader();
+          }
+        });
         readerContent.insertBefore(backBtn, readerContent.firstChild);
       }
     }
@@ -183,6 +193,16 @@ window.Reader = (() => {
   function getActiveArticleId() {
     return activeArticleId;
   }
+
+  // Handle browser back button for mobile reader
+  window.addEventListener('popstate', (e) => {
+    const readerPane = document.getElementById('reader-pane');
+    if (readerPane && readerPane.classList.contains('is-open')) {
+      if (!e.state || !e.state.readerOpen) {
+        closeReader();
+      }
+    }
+  });
 
   return {
     showArticle,
