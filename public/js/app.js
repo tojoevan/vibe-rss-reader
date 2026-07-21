@@ -5,12 +5,23 @@
 ;(async function App() {
   'use strict';
 
+  function getDynamicPageSize() {
+    if (window.innerWidth <= 768) {
+      // Header (52px) + Tab bar (40px) + Title/Actions (~50px) + Pagination (~50px) = ~192px
+      const availableHeight = window.innerHeight - 192;
+      const rowHeight = 72;
+      const count = Math.floor(availableHeight / rowHeight);
+      return Math.max(5, Math.min(10, count));
+    }
+    return 15;
+  }
+
   // --- State ---
   const state = {
     currentFeedId: 'all',
     currentTab: 'latest',
     currentPage: 1,
-    pageSize: 20,
+    pageSize: getDynamicPageSize(),
     subscriptions: [],
     isLoading: false,
   };
@@ -375,7 +386,8 @@
   async function loadArticles(forceRefresh = false) {
     if (state.isLoading) return;
 
-    const cacheKey = `${state.currentFeedId}|${state.currentTab}|${state.currentPage}`;
+    state.pageSize = getDynamicPageSize();
+    const cacheKey = `${state.currentFeedId}|${state.currentTab}|${state.currentPage}|${state.pageSize}`;
 
     if (!forceRefresh) {
       const cached = Store.getArticles(cacheKey);
@@ -743,6 +755,7 @@
     const poolListEl = $('pool-list');
     const paginationEl = $('pool-pagination');
     poolCurrentPage = page;
+    const poolPageSize = getDynamicPageSize();
 
     poolListEl.innerHTML = '<div class="loading-spinner"></div>';
     if (paginationEl) paginationEl.style.display = 'none';
@@ -931,6 +944,7 @@
     searchCurrentPage = page;
     searchCurrentQuery = query;
     const paginationEl = $('search-pagination');
+    const searchPageSize = getDynamicPageSize();
 
     searchResults.innerHTML = '<div class="loading-spinner"></div>';
     if (paginationEl) paginationEl.style.display = 'none';
@@ -1121,6 +1135,12 @@
   // RESPONSIVE RESIZE
   // ============================================================
   window.addEventListener('resize', () => {
+    const newPageSize = getDynamicPageSize();
+    if (newPageSize !== state.pageSize) {
+      state.pageSize = newPageSize;
+      state.currentPage = 1;
+      loadArticles(true);
+    }
     if (window.innerWidth > 768) {
       sidebar.classList.remove('is-open');
       const overlay = document.querySelector('.sidebar-overlay');
