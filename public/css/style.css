@@ -923,8 +923,8 @@ input { font: inherit; color: inherit; }
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+  background: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
 }
 
 .guest-hero-title {
