@@ -1063,6 +1063,7 @@ input { font: inherit; color: inherit; }
   .app-main {
     grid-template-columns: 1fr;
     top: calc(var(--header-height) + var(--mobile-tab-height));
+    z-index: 91;
   }
 
   .sidebar {
