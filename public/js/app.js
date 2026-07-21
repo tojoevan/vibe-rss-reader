@@ -10,8 +10,8 @@
       // Header (52px) + Tab bar (40px) + Title/Actions (~50px) + Pagination (~50px) = ~192px
       const availableHeight = window.innerHeight - 192;
       const rowHeight = 72;
-      const count = Math.floor(availableHeight / rowHeight);
-      return Math.max(5, Math.min(10, count));
+      const count = Math.floor(availableHeight / rowHeight) - 1;
+      return Math.max(4, Math.min(10, count));
     }
     return 15;
   }
