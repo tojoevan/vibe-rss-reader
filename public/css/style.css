@@ -1107,7 +1107,7 @@ input { font: inherit; color: inherit; }
     width: 280px;
     z-index: 96;
     transform: translateX(-100%);
-    box-shadow: var(--shadow-lg);
+    box-shadow: none !important;
   }
   .sidebar.is-open { transform: translateX(0); }
 
