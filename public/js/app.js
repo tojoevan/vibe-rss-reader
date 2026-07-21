@@ -63,15 +63,11 @@
     return new Promise(resolve => {
       const dialog = $('confirm-dialog');
       const titleEl = $('confirm-title');
-      const iconEl = $('confirm-icon');
+      const closeBtn = $('confirm-close');
       const okBtn = $('confirm-ok');
       const cancelBtn = $('confirm-cancel');
 
-      if (titleEl) titleEl.textContent = options.title || '操作确认';
-      if (iconEl) {
-        iconEl.innerHTML = options.icon || '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-      }
-      
+      if (titleEl) titleEl.textContent = options.title || '提示';
       $('confirm-message').textContent = message;
       
       if (okBtn) {
@@ -82,8 +78,15 @@
         cancelBtn.textContent = options.cancelText || '取消';
       }
 
-      okBtn.onclick = () => { dialog.close(); resolve(true); };
-      cancelBtn.onclick = () => { dialog.close(); resolve(false); };
+      const closeHandler = (val) => {
+        dialog.close();
+        resolve(val);
+      };
+
+      okBtn.onclick = () => closeHandler(true);
+      cancelBtn.onclick = () => closeHandler(false);
+      if (closeBtn) closeBtn.onclick = () => closeHandler(false);
+
       dialog.showModal();
     });
   }
@@ -364,9 +367,8 @@
       const subId = feedItem.dataset.subId;
       const confirmed = await confirm('确定要取消订阅该 RSS 源吗？', {
         title: '取消订阅',
-        icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
         okText: '取消订阅',
-        cancelText: '保留',
+        cancelText: '取消',
         type: 'danger'
       });
       if (confirmed) {
@@ -1147,7 +1149,6 @@
   $('btn-logout').addEventListener('click', async () => {
     const confirmed = await confirm('确定要退出当前账号登录吗？', {
       title: '退出登录',
-      icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
       okText: '退出登录',
       cancelText: '取消',
       type: 'danger'
