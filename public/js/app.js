@@ -646,6 +646,7 @@
 
   function openSidebar() {
     sidebar.classList.add('is-open');
+    document.body.classList.add('sidebar-open');
     // Create overlay inside app-main so it shares stacking context with sidebar
     let overlay = document.querySelector('.sidebar-overlay');
     if (!overlay) {
@@ -659,6 +660,7 @@
 
   function closeSidebar() {
     sidebar.classList.remove('is-open');
+    document.body.classList.remove('sidebar-open');
     const overlay = document.querySelector('.sidebar-overlay');
     if (overlay) {
       overlay.classList.remove('is-visible');

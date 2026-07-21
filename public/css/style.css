@@ -1093,6 +1093,13 @@ input { font: inherit; color: inherit; }
     z-index: 91;
   }
 
+  /* Hide mobile tabs when sidebar or reader-pane is open */
+  body.sidebar-open .mobile-tabs,
+  body:has(.sidebar.is-open) .mobile-tabs,
+  body:has(.reader-pane.is-open) .mobile-tabs {
+    display: none !important;
+  }
+
   .sidebar {
     position: fixed;
     top: var(--header-height);
