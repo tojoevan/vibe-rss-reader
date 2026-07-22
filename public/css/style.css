@@ -207,7 +207,7 @@ input { font: inherit; color: inherit; }
   align-items: center;
   gap: var(--space-sm);
   font-weight: 700;
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   color: var(--text-primary);
   white-space: nowrap;
   flex-shrink: 0;
@@ -1424,7 +1424,7 @@ input { font: inherit; color: inherit; }
   }
 
   .logo span {
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
   }
 
   .user-name {
