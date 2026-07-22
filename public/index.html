@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=14">
+  <link rel="stylesheet" href="/css/style.css?v=15">
 </head>
 <body>
   <!-- ===== Header ===== -->
@@ -264,6 +264,101 @@
           <p>无广告算法打扰，无隐性数据跟踪，完全由你掌控信息流。</p>
         </div>
       </div>
+
+      <!-- Architecture Diagram Showcase Section -->
+      <section class="guest-arch-section">
+        <div class="arch-section-header">
+          <div class="guest-badge" style="margin-bottom: 0.75rem;">
+            <span>Serverless 现代化云原生架构</span>
+          </div>
+          <h2>高效、轻量与极致平稳的数据流传输</h2>
+          <p>基于 Cloudflare 边缘计算与无服务器数据库，实现全平台多端同步与零延迟响应</p>
+        </div>
+
+        <div class="arch-diagram-card">
+          <div class="arch-flow">
+            <!-- Client Layer -->
+            <div class="arch-node-group">
+              <div class="arch-group-title">客户端体验层</div>
+              <div class="arch-node arch-node-client">
+                <div class="arch-node-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
+                <div class="arch-node-info">
+                  <h4>卡皮订阅 Web / Mobile</h4>
+                  <span>自适应 PWA & 极致多端排版</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flow Arrow 1 -->
+            <div class="arch-connector">
+              <div class="arch-line"></div>
+              <span class="arch-label">HTTPS / Clerk JWT Auth</span>
+            </div>
+
+            <!-- Edge Serverless Layer -->
+            <div class="arch-node-group">
+              <div class="arch-group-title">Cloudflare 边缘 Serverless 引擎</div>
+              <div class="arch-box-container">
+                <div class="arch-node arch-node-edge">
+                  <div class="arch-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                  </div>
+                  <div class="arch-node-info">
+                    <h4>Cloudflare Pages & Functions</h4>
+                    <span>全局 300+ 节点代理与 3s 节流控制</span>
+                  </div>
+                </div>
+
+                <div class="arch-sub-flow">
+                  <div class="arch-node arch-node-sub">
+                    <div class="arch-node-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="arch-node-info">
+                      <h4>Clerk 鉴权服务</h4>
+                      <span>OAuth 多渠道登录安全防线</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flow Arrow 2 -->
+            <div class="arch-connector">
+              <div class="arch-line"></div>
+              <span class="arch-label">SQLite SQL 引擎与 Fetch 代理</span>
+            </div>
+
+            <!-- Data & Source Layer -->
+            <div class="arch-node-group">
+              <div class="arch-group-title">云端数据与全网 RSS 源</div>
+              <div class="arch-split-nodes">
+                <div class="arch-node arch-node-db">
+                  <div class="arch-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                  </div>
+                  <div class="arch-node-info">
+                    <h4>Cloudflare D1 (SQLite)</h4>
+                    <span>资源池、订阅关系与历史存库</span>
+                  </div>
+                </div>
+
+                <div class="arch-node arch-node-feed">
+                  <div class="arch-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+                  </div>
+                  <div class="arch-node-info">
+                    <h4>全网 RSS / Atom 源</h4>
+                    <span>智能 XML/JSON 增量流式抓取</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- Bottom CTA Banner -->
       <div class="guest-cta-banner">

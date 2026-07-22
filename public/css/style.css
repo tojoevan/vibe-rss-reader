@@ -1149,6 +1149,170 @@ input { font: inherit; color: inherit; }
   box-shadow: var(--shadow-md);
 }
 
+/* 3.5 Architecture Diagram Showcase */
+.guest-arch-section {
+  margin-bottom: 6rem;
+}
+
+.arch-section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.arch-section-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.arch-section-header p {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.arch-diagram-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.arch-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.arch-node-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.arch-group-title {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.arch-node {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 480px;
+  transition: all var(--transition-fast);
+}
+
+.arch-node:hover {
+  border-color: #f97316;
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+}
+
+.arch-node-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.arch-node-info h4 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.arch-node-info span {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.arch-box-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+.arch-node-sub {
+  background: var(--bg-primary);
+  border-style: dashed;
+}
+
+.arch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 0.25rem 0;
+}
+
+.arch-line {
+  width: 2px;
+  height: 28px;
+  background: linear-gradient(to bottom, #f97316, var(--border));
+  position: relative;
+}
+
+.arch-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -3px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid var(--border);
+}
+
+.arch-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  margin-top: -14px;
+  z-index: 2;
+}
+
+.arch-split-nodes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 680px;
+}
+
+@media (max-width: 640px) {
+  .arch-split-nodes {
+    grid-template-columns: 1fr;
+  }
+}
+
 .guest-feature-card .feature-icon {
   width: 48px;
   height: 48px;
