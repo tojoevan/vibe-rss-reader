@@ -216,7 +216,7 @@ input { font: inherit; color: inherit; }
   transition: opacity var(--transition-fast);
 }
 .logo span {
-  background: linear-gradient(135deg, var(--text-primary) 30%, #f97316 100%);
+  background: linear-gradient(135deg, #f97316 0%, var(--text-primary) 85%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
