@@ -1424,7 +1424,7 @@ input { font: inherit; color: inherit; }
   }
 
   .logo span {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
   }
 
   .user-name {
