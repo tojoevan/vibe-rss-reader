@@ -334,7 +334,7 @@
         const feedId = li.dataset.feed;
         refreshBtn.classList.add('is-spinning');
         
-        // Trigger proxy refresh if it's a specific feed
+        // Trigger proxy refresh for specific feed or all feeds
         if (feedId !== 'all') {
           const sub = state.subscriptions.find(s => s.feed_id == feedId);
           if (sub) {
@@ -343,6 +343,13 @@
             } catch (err) {
               console.error('Refresh proxy failed:', err);
             }
+          }
+        } else {
+          // Batch refresh all subscriptions
+          if (state.subscriptions && state.subscriptions.length > 0) {
+            await Promise.allSettled(
+              state.subscriptions.map(sub => API.proxyFeed(sub.url, sub.feed_id, true))
+            );
           }
         }
         

@@ -83,7 +83,7 @@ export async function onRequestGet(context) {
         'User-Agent': 'VibeRSS/1.0',
         'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml',
       },
-      cf: { cacheTtl: 300 } // 5-minute edge cache
+      cf: { cacheTtl: refresh ? 0 : 300 } // Bypass edge cache when explicitly refreshing
     });
 
     if (!feedResponse.ok) {
