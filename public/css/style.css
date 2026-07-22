@@ -209,6 +209,8 @@ input { font: inherit; color: inherit; }
   font-weight: 700;
   font-size: var(--text-lg);
   color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .logo:hover { color: var(--accent); }
 .logo svg { flex-shrink: 0; }
@@ -216,19 +218,19 @@ input { font: inherit; color: inherit; }
 .header-right {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .user-area {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .user-name {
   font-size: var(--text-sm);
   color: var(--text-secondary);
-  max-width: 120px;
+  max-width: 90px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1404,6 +1406,35 @@ input { font: inherit; color: inherit; }
 @media (max-width: 768px) {
   :root {
     --header-height: 52px;
+  }
+
+  .app-header {
+    padding: 0 var(--space-md);
+  }
+
+  .header-left {
+    gap: var(--space-xs);
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .header-right {
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .logo span {
+    font-size: var(--text-base);
+  }
+
+  .user-name {
+    max-width: 75px;
+    padding: 4px 6px !important;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
   }
 
   .sidebar-toggle { display: flex; }
