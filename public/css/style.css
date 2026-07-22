@@ -205,14 +205,24 @@ input { font: inherit; color: inherit; }
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  font-weight: 700;
-  font-size: var(--text-xl);
+  gap: 6px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   white-space: nowrap;
   flex-shrink: 0;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
 }
-.logo:hover { color: var(--accent); }
+.logo span {
+  background: linear-gradient(135deg, var(--text-primary) 30%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.logo:hover {
+  opacity: 0.85;
+}
 .logo svg { flex-shrink: 0; }
 
 .header-right {
@@ -1424,7 +1434,8 @@ input { font: inherit; color: inherit; }
   }
 
   .logo span {
-    font-size: var(--text-xl);
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 
   .user-name {
